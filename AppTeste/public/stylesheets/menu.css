@@ -1,0 +1,36 @@
+#menu {
+    background-color: #3498db;
+    /* Cor de fundo azul */
+    color: #fff;
+    /* Cor do texto branco */
+    text-align: center;
+    /* Centraliza o texto horizontalmente */
+
+    /* Define o espaçamento interno para o menu */
+    padding: 20px;
+
+    /* Define a largura máxima e centraliza o menu horizontalmente */
+    width: 80%;
+    margin: 0 auto;
+
+    /* Adiciona algum estilo adicional, como bordas arredondadas e sombra */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo padrão para o link */
+.link {
+    color: #fff;
+    /* Cor do link sem hover */
+    text-decoration: none;
+    /* Remove sublinhado padrão */
+    transition: color 0.3s;
+    /* Adiciona uma transição suave de cor */
+}
+
+/* Estilo quando o cursor passa por cima (hover) do link */
+.link:hover {
+    color: #204660;
+    text-decoration: underline;
+    cursor: pointer;
+}

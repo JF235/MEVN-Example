@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+
+    <style>
+        img {
+            width: 40%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+    </style>
+
+    <link rel="stylesheet" href="stylesheets/menu.css">
+
+</head>
+
+<body>
+    <div id="app">
+
+        <h1>Página Inicial</h1>
+
+        <p>Seja bem-vindo!</p>
+
+        <div id="menu">
+            <a class="link" @click="doGoToFunc">Funcionários</a>
+        </div>
+
+        <img src="https://media.glassdoor.com/companyupdate/w900/1045646/transport-enterprise-leasing-companyupdate-1653680284062.png?signature=9b01a811e3f853f1deb12104e103a0d1c2552bfacce76797ac57b3856de96154"
+            alt="Caminhoes">
+
+    </div>
+
+    <script>
+        // Métodos
+        async function goToFuncionarios() {
+            console.log("Redirecting...")
+            
+            window.open("/funcionarios", "_self");
+        }
+
+        // Criando appVue
+        var app = new Vue({
+            el: '#app',
+            data: {
+            },
+            methods: {
+                doGoToFunc: goToFuncionarios,
+            }
+        })
+    </script>
+</body>
+
+</html>

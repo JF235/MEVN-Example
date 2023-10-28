@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário do Funcionário</title>
+
+    <style>
+        #employeeForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #employeeForm div {
+            margin: 10px;
+        }
+    </style>
+
+    <link rel="stylesheet" href="stylesheets/menu.css">
+
+</head>
+
+<body>
+    <div id="app">
+
+        <h1>Formulário de Funcionários</h1>
+
+        <div id="menu">
+            <a class="link" @click="doGoToFunc">Funcionários</a>
+        </div>
+
+        <form id="employeeForm" @submit.prevent>
+            <div>
+                <label for="id">ID:</label>
+                <input type="text" id="id" name="id" required>
+            </div>
+
+            <div>
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" required>
+            </div>
+
+            <div>
+                <label for="cargo">Cargo:</label>
+                <input type="text" id="cargo" name="cargo" required>
+            </div>
+
+            <button>Enviar</button>
+        </form>
+
+    </div>
+
+    <script>
+        // Métodos
+        async function goToFuncionarios() {
+            // do nothing
+        }
+
+        // Métodos
+        async function send() {
+            console.log("Sending...")
+        }
+
+        // Criando appVue
+        var app = new Vue({
+            el: '#app',
+            data: {
+            },
+            methods: {
+                doSend: send,
+                doGoToFunc: goToFuncionarios,
+            }
+        })
+    </script>
+
+</body>
+
+</html>
