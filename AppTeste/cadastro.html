@@ -3,11 +3,10 @@
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
 
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Cadastro</title>
 
     <style>
         h1 {
@@ -43,7 +42,7 @@
         <br>
 
         <div class="menu">
-            <p>Login</p>
+            <p>Cadastro</p>
 
             <form @submit.prevent>
                 <div>
@@ -54,9 +53,21 @@
                 <br>
 
                 <div>
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" v-model="nome" required>
+                </div>
+
+                <br>
+
+                <div>
                     <label for="senha">Senha:</label>
                     <input type="text" id="senha" v-model="senha" required>
                 </div>
+
+                <!-- <div>
+                    <label for="confirmaSenha">Confirmar Senha:</label>
+                    <input type="text" id="confirmaSenha" v-model="confirmaSenha" required>
+                </div> -->
 
                 <br>
 
@@ -64,7 +75,6 @@
                 <button @click="doCancelar">Cancelar</button>
 
                 <br>
-                Clique para <a @click="doCadastrar" class="link">Fazer Cadastro</a>
             </form>
 
         </div>
@@ -86,8 +96,10 @@
         }
 
         async function enviar() {
-            if (app.senha == undefined || app.senha.length == 0 ||
-                app.cpf == undefined || app.cpf.length == 0) {
+            // Verificar se todos os campos estão devidamente preenchidos
+            if (app.nome == undefined || app.nome.length == 0 ||
+                app.senha == undefined || app.senha.length == 0 ||
+                app.cpf == undefined || app.cpf.length == 0 ) {
                 console.log("Campos não preenchidos de forma devida.");
                 return;
             }
@@ -96,51 +108,45 @@
             // POST com o axios
             var data = {
                 "cpf": app.cpf,
+                "nome": app.nome,
                 "senha": app.senha,
             };
             var request = axios({
                 "method": "post",
-                "url": "/login",
+                "url": "/cadastro",
                 "data": data
             });
 
             // Realizar requisição de forma assíncrona
             try {
                 response = await request
-                console.log(response)
+                console.log(response.data.resultado)
             } catch (error) {
-                console.log(response)
+                console.log(response.data.resultado)
             }
         }
 
         async function cancelar() {
-            window.open("/", "_self");
-        }
-
-        async function cadastrar() {
-            console.log("cadastrar")
-
-            window.open("/cadastro", "_self");
+            console.log("cancelar cadastro")
+            window.open("/login", "_self");
         }
 
         // Criando appVue
         var app = new Vue({
             el: '#app',
             data: {
-                cpf: "",
-                senha: ""
+                nome: "",
+                senha: "",
+                cpf: ""
             },
             methods: {
                 doGoToLogin: goToLogin,
-                doCadastrar: cadastrar,
                 doEnviar: enviar,
                 doCancelar: cancelar,
                 doGoToHome: goToHome,
             }
         })
     </script>
-
-    <script></script>
 </body>
 
 </html>
