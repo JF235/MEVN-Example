@@ -1,8 +1,10 @@
-#menu {
-    background-color: #3498db;
+.menu {
+    background-color: #6e9ed3;
     /* Cor de fundo azul */
-    color: #fff;
+    color: #c3dfe4;
     /* Cor do texto branco */
+    border: 2px solid #274761;
+
     text-align: center;
     /* Centraliza o texto horizontalmente */
 
@@ -33,4 +35,8 @@
     color: #204660;
     text-decoration: underline;
     cursor: pointer;
+}
+
+header a {
+    text-decoration: none;
 }

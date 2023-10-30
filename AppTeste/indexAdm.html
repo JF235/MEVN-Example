@@ -16,31 +16,18 @@
             margin-top: 30px;
             margin-bottom: 30px;
         }
-
-        h1 {
-            color: #274761;
-            text-align: center;
-            font-size: 3em;
-        }
     </style>
 
     <link rel="stylesheet" href="stylesheets/menu.css">
 
-    <script src="javascript/load.js"></script>
 </head>
 
 <body>
     <div id="app">
 
-        <a href="." @click="doGoToHome">
-            <h1>NOME DA EMPRESA</h1>
-        </a>
-
-        <div class="menu">
-            <a class="link" @click="doGoToLogin">Login</a>
+        <div id="menu">
+            <a class="link" @click="doGoToFunc">Funcionários</a>
         </div>
-
-        <br>
 
         <img src="https://media.glassdoor.com/companyupdate/w900/1045646/transport-enterprise-leasing-companyupdate-1653680284062.png?signature=9b01a811e3f853f1deb12104e103a0d1c2552bfacce76797ac57b3856de96154"
             alt="Caminhoes">
@@ -49,18 +36,11 @@
 
     <script>
         // Métodos
-        async function goToLogin() {
+        async function goToFuncionarios() {
             console.log("Redirecting...")
-
-            window.open("/login", "_self");
+            
+            window.open("/funcionarios", "_self");
         }
-
-        async function goToHome() {
-            console.log("Redirecting...")
-
-            window.open("/", "_self");
-        }
-
 
         // Criando appVue
         var app = new Vue({
@@ -68,8 +48,7 @@
             data: {
             },
             methods: {
-                doGoToLogin: goToLogin,
-                doGoToHome: goToHome,
+                doGoToFunc: goToFuncionarios,
             }
         })
     </script>

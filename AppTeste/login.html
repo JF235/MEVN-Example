@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <style>
+        h1 {
+            color: #274761;
+            text-align: center;
+            font-size: 3em;
+        }
+
+        #login {
+            background-color: #6e9ed3;
+            /* Cor de fundo azul */
+            color: #c3dfe4;
+            /* Cor do texto branco */
+            border: 2px solid #274761;
+        }
+    </style>
+
+    <link rel="stylesheet" href="stylesheets/menu.css">
+
+    <script src="javascript/load.js"></script>
+</head>
+
+<body>
+    <div id="app">
+
+        <a href="." @click="doGoToHome">
+            <h1>NOME DA EMPRESA</h1>
+        </a>
+
+        <div class="menu">
+            <a class="link" @click="doGoToLogin">Login</a>
+        </div>
+
+        <br>
+
+        <div class="menu">
+            <p>Login</p>
+
+            <form @submit.prevent>
+                <div>
+                    <label for="usuario">Usuário:</label>
+                    <input type="text" id="usuario" v-model="usuario" required>
+                </div>
+
+                <br>
+
+                <div>
+                    <label for="senha">Senha:</label>
+                    <input type="text" id="senha" v-model="senha" required>
+                </div>
+
+                <br>
+
+                <button @click="doEnviar">Enviar</button>
+                <button @click="doCancelar">Cancelar</button>
+
+                <br>
+                Clique para <a @click="doCadastrar" class="link">Fazer Cadastro</a>
+            </form>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Métodos
+        async function goToLogin() {
+            console.log("Redirecting...")
+
+            window.open("/login", "_self");
+        }
+
+        async function enviar() {
+            console.log("enviar")
+        }
+
+        async function cancelar() {
+            console.log("cancelar")
+        }
+
+        async function cadastrar() {
+            console.log("cadastrar")
+        }
+
+        // Criando appVue
+        var app = new Vue({
+            el: '#app',
+            data: {
+                usuario: "",
+                senha: ""
+            },
+            methods: {
+                doGoToLogin: goToLogin,
+                doCadastrar: cadastrar,
+                doEnviar: enviar,
+                doCancelar: cancelar,
+            }
+        })
+    </script>
+
+    <script ></script>
+</body>
+
+</html>
