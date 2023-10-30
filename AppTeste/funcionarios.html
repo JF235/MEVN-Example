@@ -35,20 +35,22 @@
         <form id="employeeForm" @submit.prevent>
             <div>
                 <label for="id">ID:</label>
-                <input type="text" id="id" name="id" required>
+                <input type="text" id="id" v-model="id" required>
             </div>
 
             <div>
                 <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome" required>
+                <input type="text" id="nome" v-model="nome" required>
             </div>
 
             <div>
                 <label for="cargo">Cargo:</label>
-                <input type="text" id="cargo" name="cargo" required>
+                <input type="text" id="cargo" v-model="cargo" required>
             </div>
 
-            <button>Enviar</button>
+            <button @click="doInserir">Inserir</button>
+            <button @click="doEditar">Editar</button>
+            <button @click="doRemover">Remover</button>
         </form>
 
     </div>
@@ -60,17 +62,90 @@
         }
 
         // Métodos
-        async function send() {
-            console.log("Sending...")
+        async function inserir() {
+            // Verificar se todos os campos estão devidamente preenchidos
+            if (app.id == undefined || app.id.length == 0 ||
+                app.nome == undefined || app.nome.length == 0 ||
+                app.cargo == undefined || app.cargo.length == 0) {
+                console.log("Campos não preenchidos de forma devida.");
+                return;
+            }
+
+            // Encapsular os dados da requisição e cria a requisição
+            // POST com o axios
+            var data = {
+                "id": app.id,
+                "nome": app.nome,
+                "curso": app.cargo
+            };
+            var request = axios({
+                "method": "post",
+                "url": "/funcionarios",
+                "data": data
+            });
+
+            // Realizar requisição de forma assíncrona
+            try {
+                response = await request
+                console.log(response.data.resultado)
+            } catch (error) {
+                console.log(response.data.resultado)
+            }
+        }
+
+        // Métodos
+        async function editar() {
+            // Verifica campos do formulário
+            if ((app.nome == undefined || app.nome.length == 0) &&
+                (app.cargo == undefined || app.cargo.length == 0)) {
+                app.mensagem = "Preencha os campos Nome/Cargo";
+                return;
+            }
+            
+            // Atualiza as novas infromações
+            var data = {
+                "id": app.id,
+            };
+            
+            if (app.nome == undefined || app.nome.length == 0)
+                data.nome = app.nome;
+            if (app.cargo == undefined || app.cargo.length == 0)
+                data.cargo = app.cargo;
+
+            // Prepara a requisição
+            var request = axios({
+                "method": "put",
+                "url": "/funcionarios/" + app.id,
+                "headers": { "Content-Type": "application/json" },
+                "data": data
+            });
+
+            // Faz a requisição
+            try {
+                response = await request
+                console.log(response.data.resultado);
+            } catch (error) {
+                console.log("O usuário autenticado não está autorizado a fazer modificações");
+            }
+        }
+
+        // Métodos
+        async function remover() {
+            console.log("Removendo...")
         }
 
         // Criando appVue
         var app = new Vue({
             el: '#app',
             data: {
+                id: "",
+                nome: "",
+                cargo: ""
             },
             methods: {
-                doSend: send,
+                doInserir: inserir,
+                doEditar: editar,
+                doRemover: remover,
                 doGoToFunc: goToFuncionarios,
             }
         })
