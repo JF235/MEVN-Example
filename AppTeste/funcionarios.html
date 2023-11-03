@@ -35,39 +35,41 @@
         <form id="employeeForm" @submit.prevent>
             <div>
                 <label for="id">ID:</label>
-                <input type="text" id="id" v-model="id" required>
+                <input type="text" id="id" v-model="id">
             </div>
 
             <div>
                 <label for="nome">Nome:</label>
-                <input type="text" id="nome" v-model="nome" required>
+                <input type="text" id="nome" v-model="nome">
             </div>
 
             <div>
                 <label for="cargo">Cargo:</label>
-                <input type="text" id="cargo" v-model="cargo" required>
+                <input type="text" id="cargo" v-model="cargo">
             </div>
 
             <button @click="doInserir">Inserir</button>
             <button @click="doEditar">Editar</button>
             <button @click="doRemover">Remover</button>
+            <button @click="doListar">Listar Funcionários</button>
+
+            {{ mensagem }}
+
         </form>
 
     </div>
 
     <script>
-        // Métodos
         async function goToFuncionarios() {
             // do nothing
         }
 
-        // Métodos
         async function inserir() {
             // Verificar se todos os campos estão devidamente preenchidos
             if (app.id == undefined || app.id.length == 0 ||
                 app.nome == undefined || app.nome.length == 0 ||
                 app.cargo == undefined || app.cargo.length == 0) {
-                console.log("Campos não preenchidos de forma devida.");
+                app.mensagem = "Campos não preenchidos de forma devida.";
                 return;
             }
 
@@ -76,7 +78,7 @@
             var data = {
                 "id": app.id,
                 "nome": app.nome,
-                "curso": app.cargo
+                "cargo": app.cargo
             };
             var request = axios({
                 "method": "post",
@@ -87,30 +89,36 @@
             // Realizar requisição de forma assíncrona
             try {
                 response = await request
-                console.log(response.data.resultado)
+                app.mensagem = response.data.resultado;
             } catch (error) {
-                console.log(response.data.resultado)
+                app.mensagem = response.data.resultado;
             }
         }
 
-        // Métodos
         async function editar() {
+            if (app.id == undefined || app.id.length == 0) {
+                app.mensagem = "preencha o ID do funcionário";
+                return;
+            }
+
             // Verifica campos do formulário
             if ((app.nome == undefined || app.nome.length == 0) &&
                 (app.cargo == undefined || app.cargo.length == 0)) {
-                app.mensagem = "Preencha os campos Nome/Cargo";
+                app.mensagem = "preencha os campos que deseja editar";
                 return;
             }
-            
+
+            var novosDados = {};
+            if (app.nome !== undefined || app.nome.length !== 0)
+                novosDados.nome = app.nome;
+            if (app.cargo !== undefined || app.cargo.length !== 0)
+                novosDados.cargo = app.cargo;
+
             // Atualiza as novas infromações
             var data = {
                 "id": app.id,
+                "novosDados": novosDados,
             };
-            
-            if (app.nome == undefined || app.nome.length == 0)
-                data.nome = app.nome;
-            if (app.cargo == undefined || app.cargo.length == 0)
-                data.cargo = app.cargo;
 
             // Prepara a requisição
             var request = axios({
@@ -123,16 +131,51 @@
             // Faz a requisição
             try {
                 response = await request
-                console.log(response.data.resultado);
+                app.mensagem = response.data.resultado;
             } catch (error) {
-                console.log("O usuário autenticado não está autorizado a fazer modificações");
+                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
             }
         }
 
-        // Métodos
         async function remover() {
-            console.log("Removendo...")
+            if (app.id == undefined || app.id.length == 0) {
+                app.mensagem = "preencha o ID do funcionário";
+                return;
+            }
+
+            var data = {
+                "id": app.id,
+            };
+
+            var request = axios({
+                "method": "delete",
+                "url": "/funcionarios/" + app.id,
+                "data": data
+            });
+            try {
+                response = await request
+                app.mensagem = response.data.resultado;
+                app.payload = response;
+            } catch (error) {
+                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+            }
         }
+
+        async function listar() {
+            var request = axios({
+                "method": "get",
+                "url": "/funcionarios/all"
+            });
+            try {
+                response = await request
+                app.mensagem = response.data.alunos;
+                app.payload = response;
+            } catch (error) {
+                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+            }
+        }
+
+
 
         // Criando appVue
         var app = new Vue({
@@ -140,14 +183,16 @@
             data: {
                 id: "",
                 nome: "",
-                cargo: ""
+                cargo: "",
+                mensagem: ""
             },
             methods: {
                 doInserir: inserir,
                 doEditar: editar,
                 doRemover: remover,
                 doGoToFunc: goToFuncionarios,
-            }
+                doListar: listar,
+            },
         })
     </script>
 

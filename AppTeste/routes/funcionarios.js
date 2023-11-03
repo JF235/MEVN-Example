@@ -1,9 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
+// Banco de dados de funcionários cadastrados
 var funcionariosDB = require('../models/funcionarios');
 
+// Envia a página de gerenciamento de funcionários
 function sendFuncionariosFile(req, res) {  // GET
+  // Verificar autenticação
+  // not implemented...
+
   var path = 'funcionarios.html';
   res.header('Cache-Control', 'no-cache');
   res.sendFile(path, { "root": "./" });
@@ -13,8 +18,8 @@ async function inserirFuncionario(req, res) {  // POST
   // Verificar autenticação
   // not implemented...
 
-  // Verificar se o ID usado já não está no Banco de Dados, fazendo uma
-  // query com id
+  // Verificar se o ID usado já não está no Banco de Dados, 
+  // fazendo uma query com id
   var query = { "id": req.body.id };
   var response = {};
   var data = await funcionariosDB.findOne(query);
@@ -27,7 +32,8 @@ async function inserirFuncionario(req, res) {  // POST
     return;
   }
 
-  // Salvar no banco de dados
+  // ID de funcionário novo
+  // Salva no banco de dados
   var db = new funcionariosDB(); // Conexão com o banco de dados
   db.id = req.body.id;
   db.nome = req.body.nome;
@@ -45,16 +51,12 @@ async function inserirFuncionario(req, res) {  // POST
 async function alteraFuncionario(req, res) {   // PUT
   // Verifica autenticação
   // ...
-  
+
   // Prepara a query
   var response = {};
   var query = { "id": req.body.id };
-  var data = await funcionariosDB.findOne(query);
+  var data = req.body.novosDados;
 
-  response = {};
-  query = { "id": req.body.id };
-  data = { "nome": req.body.nome, "cargo": req.body.cargo };
-  
   // Realiza a query e responde
   try {
     var dat = await funcionariosDB.findOneAndUpdate(query, data);
@@ -69,11 +71,49 @@ async function alteraFuncionario(req, res) {   // PUT
   res.json(response);
 }
 
+async function deletaFuncionario(req, res) {   // DELETE (remove)
+  // Verifica autenticação
+  // ...
+
+  // Monta requisição
+  var response = {};
+  var query = { "id": req.body.id };
+
+  // Remove
+  try {
+    var data = await funcionariosDB.findOneAndRemove(query);
+    if (data == null)
+      response = { "resultado": "funcionário inexistente" };
+    else
+      response = { "resultado": "funcionário removido" };
+  } catch (err) {
+    response = { "resultado": "falha de acesso ao DB" };
+  }
+  res.json(response);
+}
+
+async function obterTodosFuncionarios(req, res) {  // GET
+  // Obtém todos os funcionários
+  var response = {};
+
+  try {
+    var data = await funcionariosDB.find({});
+    response = { "alunos": data };
+  } catch (err) {
+    response = { "resultado": "falha de acesso ao BD" };
+  }
+  res.json(response);
+}
+
 router.route('/')
   .get(sendFuncionariosFile)
   .post(inserirFuncionario);
 
-router.route('/:id')   // operacoes sobre um funcionario
-  .put(alteraFuncionario);
+router.route('/:id')
+  .put(alteraFuncionario)
+  .delete(deletaFuncionario);
+
+router.route('/all')
+  .get(obterTodosFuncionarios);
 
 module.exports = router;
