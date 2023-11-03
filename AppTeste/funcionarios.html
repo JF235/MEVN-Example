@@ -26,40 +26,39 @@
 <body>
     <div id="app">
 
-        <h1>Formulário de Funcionários</h1>
+        <headercomponent></headercomponent>
 
-        <div id="menu">
-            <a class="link" @click="doGoToFunc">Funcionários</a>
+
+        <div class="menu">
+            <form id="employeeForm" @submit.prevent>
+                <div>
+                    <label for="id">ID:</label>
+                    <input type="text" id="id" v-model="id">
+                </div>
+
+                <div>
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" v-model="nome">
+                </div>
+
+                <div>
+                    <label for="cargo">Cargo:</label>
+                    <input type="text" id="cargo" v-model="cargo">
+                </div>
+
+                <button @click="doInserir">Inserir</button>
+                <button @click="doEditar">Editar</button>
+                <button @click="doRemover">Remover</button>
+                <button @click="doListar">Listar Funcionários</button>
+
+                {{ mensagem }}
+
+            </form>
+            
         </div>
-
-        <form id="employeeForm" @submit.prevent>
-            <div>
-                <label for="id">ID:</label>
-                <input type="text" id="id" v-model="id">
-            </div>
-
-            <div>
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" v-model="nome">
-            </div>
-
-            <div>
-                <label for="cargo">Cargo:</label>
-                <input type="text" id="cargo" v-model="cargo">
-            </div>
-
-            <button @click="doInserir">Inserir</button>
-            <button @click="doEditar">Editar</button>
-            <button @click="doRemover">Remover</button>
-            <button @click="doListar">Listar Funcionários</button>
-
-            {{ mensagem }}
-
-        </form>
-
     </div>
 
-    <script>
+    <script type="module">
         async function goToFuncionarios() {
             // do nothing
         }
@@ -88,7 +87,7 @@
 
             // Realizar requisição de forma assíncrona
             try {
-                response = await request
+                var response = await request
                 app.mensagem = response.data.resultado;
             } catch (error) {
                 app.mensagem = response.data.resultado;
@@ -130,7 +129,7 @@
 
             // Faz a requisição
             try {
-                response = await request
+                var response = await request
                 app.mensagem = response.data.resultado;
             } catch (error) {
                 app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
@@ -153,7 +152,7 @@
                 "data": data
             });
             try {
-                response = await request
+                var response = await request
                 app.mensagem = response.data.resultado;
                 app.payload = response;
             } catch (error) {
@@ -166,16 +165,18 @@
                 "method": "get",
                 "url": "/funcionarios/all"
             });
+            
             try {
-                response = await request
-                app.mensagem = response.data.alunos;
+                var response = await request
+                app.mensagem = response.data.funcionarios;
                 app.payload = response;
             } catch (error) {
                 app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
             }
         }
 
-
+        import header from "./vue/header.js";
+        Vue.component("headercomponent", header);
 
         // Criando appVue
         var app = new Vue({

@@ -94,11 +94,13 @@ async function deletaFuncionario(req, res) {   // DELETE (remove)
 
 async function obterTodosFuncionarios(req, res) {  // GET
   // Obtém todos os funcionários
+  res.header('Cache-Control', 'no-cache');
+  
   var response = {};
 
   try {
     var data = await funcionariosDB.find({});
-    response = { "alunos": data };
+    response = { "funcionarios": data };
   } catch (err) {
     response = { "resultado": "falha de acesso ao BD" };
   }
