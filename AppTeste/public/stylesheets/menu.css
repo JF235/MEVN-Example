@@ -37,6 +37,12 @@
     cursor: pointer;
 }
 
-header a {
+#headercomponent h1 {
+    text-align: center;
+}
+
+#headercomponent h1 a {
+    color: #274761;
+    font-size: 2em;
     text-decoration: none;
 }

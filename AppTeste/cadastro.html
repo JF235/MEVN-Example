@@ -8,22 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
 
-    <style>
-        h1 {
-            color: #274761;
-            text-align: center;
-            font-size: 3em;
-        }
-
-        #login {
-            background-color: #6e9ed3;
-            /* Cor de fundo azul */
-            color: #c3dfe4;
-            /* Cor do texto branco */
-            border: 2px solid #274761;
-        }
-    </style>
-
     <link rel="stylesheet" href="stylesheets/menu.css">
 
 </head>
@@ -31,15 +15,7 @@
 <body>
     <div id="app">
 
-        <a href="." @click="doGoToHome">
-            <h1>NOME DA EMPRESA</h1>
-        </a>
-
-        <div class="menu">
-            <a class="link" @click="doGoToLogin">Login</a>
-        </div>
-
-        <br>
+        <headercomponent></headercomponent>
 
         <div class="menu">
             <p>Cadastro</p>
@@ -81,20 +57,7 @@
 
     </div>
 
-    <script>
-        // Métodos
-        async function goToLogin() {
-            console.log("Redirecting...")
-
-            window.open("/login", "_self");
-        }
-
-        async function goToHome() {
-            console.log("Redirecting...")
-
-            window.open("/", "_self");
-        }
-
+    <script type="module">
         async function enviar() {
             // Verificar se todos os campos estão devidamente preenchidos
             if (app.nome == undefined || app.nome.length == 0 ||
@@ -131,6 +94,9 @@
             window.open("/login", "_self");
         }
 
+        import header from "./vue/header.js";
+        Vue.component("headercomponent", header);
+
         // Criando appVue
         var app = new Vue({
             el: '#app',
@@ -140,10 +106,8 @@
                 cpf: ""
             },
             methods: {
-                doGoToLogin: goToLogin,
                 doEnviar: enviar,
                 doCancelar: cancelar,
-                doGoToHome: goToHome,
             }
         })
     </script>
