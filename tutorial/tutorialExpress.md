@@ -1,20 +1,31 @@
-# Getting Started
+# Express
 
 ## Obtendo a página `index.html`
 
-Após gerar o projeto com *express generator*, adicionar o arquivo com o router em `app.js`.
+Após gerar o projeto com *express generator*, adicionar o arquivo `routes/index.js` com o roteador em `app.js`.
 
 ```js
-var indexRouter = require('./routes/index');
+// app.js
+
+var indexRouter = require('./routes/index'); // Extensão .js pode ser suprimida
 ```
 
-Em `routes/index.js`, vou escrever a função que trata uma requisição do tipo *GET* na raíz. Para isso devo preparar a resposta da requisição (parâmetro `res` da função `sendIndexFile`) e enviar o arquivo com `sendFile`.
+Em `routes/index.js`, vou escrever a função que trata uma requisição do tipo *GET* na raíz, como
+
+```http
+GET / HTTP/1.1
+...
+```
+
+Para isso devo preparar a resposta da requisição (parâmetro `res` da função `sendIndexFile`) e enviar o arquivo com `sendFile`.
 
 ```js
+// routes/index.js
+
 var express = require('express');
 var router = express.Router();
 
-/* Método para obter página index.html, no diretório AppTeste. */
+/* Método para obter página AppTeste/index.html */
 function sendIndexFile(req, res) {  // GET
   var path = 'index.html';
   res.header('Cache-Control', 'no-cache');
@@ -26,87 +37,14 @@ router.route('/')
 
 module.exports = router;
 ```
-
-Observe que o arquivo `AppTeste/index.html` deve existir.
-
-## Vue e `form`
-
-1. Não quero que o navegador tome as próprias iniciativas ao clicar em um botão de enviar no forms.
-
-    ```html
-    <form id="employeeForm">
-        <div>
-            <label for="id">ID:</label>
-            <input type="text" id="id" name="id" required>
-        </div>
-
-        <div>
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" required>
-        </div>
-
-        <div>
-            <label for="cargo">Cargo:</label>
-            <input type="text" id="cargo" name="cargo" required>
-        </div>
-
-        <button>Enviar</button>
-    </form>
-    ```
-
-    Por exemplo, ele envia um GET com os campos
-
-    ```
-    GET /?id=123&nome=123&cargo=123 200 1.871 ms - 2324
-    ```
-
-    Para isso, vou importar o **Vue** e usar o manipulador de eventos `@submit.prevent`. Quando um formulário for submetido, evento representado por `@submit` é feito o uso do modificador `.prevent`, que previne o comportamento padrão do navegador.
-
-    ```html
-    <!-- Importando Vue -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-        ...
-
-        <!-- Usando o tratador de evento com modificador -->
-        <form id="employeeForm" @submit.prevent>
-        ... 
-    ```
-
-    Além disso, posso escolher um método definido no objeto `Vue` para ser executado no evento `submit`.
-
-    Primeiro defino o método...
-    ```html
-    <script>
-        // Métodos
-        async function send() {
-            console.log("Sending...")
-        }
-
-        // Criando appVue
-        var app = new Vue({
-            el: '#app',
-            data: {
-            },
-            methods: {
-                doSend: send,
-            }
-        })
-    </script>
-    ```
-
-    Depois associo ao evento
-
-    ```html
-    <form id="employeeForm" @submit.prevent="doSend">
-        <!-- ... -->    
-    </form>
-    ```
     
 ## Redirecionando para outra página
 
 Vou começar adicionando um tratador da nova rota "/funcionarios" no `app.js`
 
 ```js
+// app.js
+
 var funcionariosRouter = require('./routes/funcionarios')
 app.use('/funcionarios', funcionariosRouter);
 ```
@@ -114,6 +52,8 @@ app.use('/funcionarios', funcionariosRouter);
 Em seguida vou criar o tratador de rotas em `./routes/funcionarios.js`. Na primeira iteração, desse projeto vou somente devolver uma resposta com uma string "Funcionarios" de conteúdo.
 
 ```js
+// routes/funcionarios.js
+
 var express = require('express');
 var router = express.Router();
 
@@ -127,12 +67,9 @@ router.get('/', function(req, res, next) {
 module.exports = router;
 ```
 
-Na parte do fronted, `index.html`, vou adicionar um link com um tratador de eventos do tipo `@click` que invoca o método `goToFuncionarios`, responsável por abrir a outra página na mesma aba.
+Na parte do frontend, `index.html`, vou adicionar um link com um tratador de eventos do tipo `@click` que invoca o método `goToFuncionarios`, responsável por abrir a outra página na mesma aba.
 
 ```html
-<!-- Preciso incluir axios -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
-
 <body>
     <div id="app">
         ...
@@ -143,14 +80,10 @@ Na parte do fronted, `index.html`, vou adicionar um link com um tratador de even
     </div>
 
     <script>
-        // Métodos
         async function goToFuncionarios() {
-            console.log("Redirecting...");
-            // Abre em uma outra aba
             window.open("/funcionarios", "_self");
         }
 
-        // Criando appVue
         var app = new Vue({
             el: '#app',
             data: {
@@ -166,6 +99,8 @@ Na parte do fronted, `index.html`, vou adicionar um link com um tratador de even
 Agora se eu quero que a nova janela seja o formulário de `funcionarios.html`, vou editar o conteúdo da resposta no `funcionarios.js` e adicionar o método `sendFile`.
 
 ```js
+// routes/funcionarios.js
+
 var express = require('express');
 var router = express.Router();
 
@@ -188,6 +123,8 @@ module.exports = router;
 O projeto express permite retornar diretamente arquivos estáticos presentes no diretório `public/`. Isso foi configurado em `app.js`
 
 ```js
+// app.js
+
 // Obtém os arquivos estáticos em public/ por padrão
 app.use(express.static(path.join(__dirname, 'public')));
 ```
@@ -230,6 +167,8 @@ A primeira funcionaldiade é **Inserir** o funcionário com dados preenchidos, u
 Com mais detalhes no que é preciso fazer em `inserir()`:
 
 ```js
+// routes/funcionarios.js
+
 async function inserir() {
     // Verificar se todos os campos estão devidamente preenchidos
     if (app.id == undefined || app.id.length == 0 ||
@@ -244,7 +183,7 @@ async function inserir() {
     var data = {
         "id": app.id,
         "nome": app.nome,
-        "curso": app.cargo
+        "cargo": app.cargo
     };
     var request = axios({
         "method": "post",
@@ -288,6 +227,8 @@ Por enquanto, nenhuma funcionalidade do *POST* está definida no lado do servido
 Vou adicionar a ação relacionada ao *POST*, para isso vou editar o arquivo `routes/funcioanrios.js`
 
 ```js
+// routes/funcionarios.js
+
 async function inserirFuncionario(req, res) {  // POST
   // Verificar autenticação
   // not implemented...
@@ -336,24 +277,33 @@ Adiciono o botão e crio o método
 
 <script>
 async function editar() {
+    // Verifica se o campo ID está preenchido
+    if (app.id == undefined || app.id.length == 0) {
+        app.mensagem = "preencha o ID do funcionário";
+        return;
+    }
+
     // Verifica campos do formulário
     if ((app.nome == undefined || app.nome.length == 0) &&
         (app.cargo == undefined || app.cargo.length == 0)) {
-        app.mensagem = "Preencha os campos Nome/Cargo";
+        app.mensagem = "preencha os campos que deseja editar";
         return;
     }
-    
-    // Atualiza as novas infromações
-    var data = {
-        "id": app.id,
-    };
-    
-    if (app.nome == undefined || app.nome.length == 0)
-        data.nome = app.nome;
-    if (app.cargo == undefined || app.cargo.length == 0)
-        data.cargo = app.cargo;
+
+    // Verifica quais são os dados que serão editados e constrói
+    // o objeto "novosDados"
+    var novosDados = {};
+    if (app.nome !== undefined || app.nome.length !== 0)
+        novosDados.nome = app.nome;
+    if (app.cargo !== undefined || app.cargo.length !== 0)
+        novosDados.cargo = app.cargo;
 
     // Prepara a requisição
+    var data = {
+        "id": app.id,
+        "novosDados": novosDados,
+    };
+
     var request = axios({
         "method": "put",
         "url": "/funcionarios/" + app.id,
@@ -364,22 +314,96 @@ async function editar() {
     // Faz a requisição
     try {
         response = await request
-        console.log(response.data.resultado);
+        app.mensagem = response.data.resultado;
     } catch (error) {
-        console.log("O usuário autenticado não está autorizado a fazer modificações");
+        app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
     }
 }
-
-
-...
-var app = new Vue({
-            methods: {
-                ...
-                doEditar: editar,
-                ...
-            }
-        })
 </script>
 ```
 
+No backend,
+
+```js
+// routes/funcionarios.js
+
+async function alteraFuncionario(req, res) {   // PUT
+  // Verifica autenticação
+  // ...
+
+  // Prepara a query
+  var response = {};
+  var query = { "id": req.body.id };
+  var data = req.body.novosDados;
+
+  // Realiza a query e responde
+  try {
+    var dat = await funcionariosDB.findOneAndUpdate(query, data);
+    if (dat == null)
+      response = { "resultado": "funcionario inexistente" };
+    else
+      response = { "resultado": "funcionario atualizado" };
+  } catch (err) {
+    response = { "resultado": "falha de acesso ao DB" };
+  }
+
+  res.json(response);
+}
+```
+
 ## Remoção
+
+```html
+...
+
+<script>
+    async function remover() {
+        if (app.id == undefined || app.id.length == 0) {
+            app.mensagem = "preencha o ID do funcionário";
+            return;
+        }
+
+        var data = {
+            "id": app.id,
+        };
+
+        var request = axios({
+            "method": "delete",
+            "url": "/funcionarios/" + app.id,
+            "data": data
+        });
+        try {
+            response = await request
+            app.mensagem = response.data.resultado;
+            app.payload = response;
+        } catch (error) {
+            app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+        }
+    }
+</script>
+```
+
+```js
+// routes/funcionarios.js
+
+async function deletaFuncionario(req, res) {   // DELETE (remove)
+  // Verifica autenticação
+  // ...
+
+  // Monta requisição
+  var response = {};
+  var query = { "id": req.body.id };
+
+  // Remove
+  try {
+    var data = await funcionariosDB.findOneAndRemove(query);
+    if (data == null)
+      response = { "resultado": "funcionário inexistente" };
+    else
+      response = { "resultado": "funcionário removido" };
+  } catch (err) {
+    response = { "resultado": "falha de acesso ao DB" };
+  }
+  res.json(response);
+}
+```
