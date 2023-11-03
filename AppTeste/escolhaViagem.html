@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Escolha de Viagem</title>
+
+    <style>
+        #employeeForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #employeeForm div {
+            margin: 10px;
+        }
+    </style>
+
+    <link rel="stylesheet" href="../stylesheets/menu.css">
+
+</head>
+
+<body>
+    <div id="app">
+
+        <headercomponent></headercomponent>
+
+        <div class="menu">
+            <h2>Escolha de viagem</h2>
+
+            <form id="employeeForm" @submit.prevent>
+                <div>
+                    <label for="partida">Partida:</label>
+                    <input type="text" id="partida" v-model="partida">
+                </div>
+
+                <div>
+                    <label for="chegada">Chegada:</label>
+                    <input type="text" id="chegada" v-model="chegada">
+                </div>
+
+                <div>
+                    <label for="data">Data:</label>
+                    <input type="text" id="data" v-model="data">
+                </div>
+
+                <button @click="doBuscar">Buscar</button><br>
+
+                {{ mensagem }}
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+
+        async function buscar() {
+            console.log("procurar por:\nPartida: " + app.partida + "\nChegada: " + app.chegada + "\nData: " + app.data)
+        }
+
+        import header from "../vue/header.js";
+        Vue.component("headercomponent", header);
+
+        // Criando appVue
+        var app = new Vue({
+            el: '#app',
+            data: {
+                "partida": "",
+                "chegada": "",
+                "data": "",
+                "mensagem": ""
+            },
+            methods: {
+                doBuscar: buscar,
+            },
+        })
+    </script>
+
+</body>
+
+</html>

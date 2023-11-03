@@ -1,0 +1,11 @@
+var mongoose = require("mongoose");
+conn1 = mongoose.createConnection('mongodb://mongo:27017/', {useNewUrlParser: true});
+var Schema = mongoose.Schema;
+
+// Modifique aqui
+var viagensSchema = new Schema({
+    "partida": String,
+    "chegada": String,
+    "data": String
+});
+module.exports = conn1.model('viagens', viagensSchema);
