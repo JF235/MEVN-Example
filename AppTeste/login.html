@@ -43,6 +43,8 @@
                 Clique para <a @click="doCadastrar" class="link">Fazer Cadastro</a>
             </form>
 
+            {{ mensagem }}
+
         </div>
 
     </div>
@@ -52,7 +54,7 @@
         async function enviar() {
             if (app.senha == undefined || app.senha.length == 0 ||
                 app.cpf == undefined || app.cpf.length == 0) {
-                console.log("Campos não preenchidos de forma devida.");
+                app.mensagem = "Campos não preenchidos de forma devida.";
                 return;
             }
 
@@ -70,10 +72,11 @@
 
             // Realizar requisição de forma assíncrona
             try {
-                response = await request
-                console.log(response)
+                var response = await request
+                app.mensagem = response.data
+                window.open("/", "_self");
             } catch (error) {
-                console.log(response)
+                app.mensagem = response.data
             }
         }
 
@@ -82,8 +85,6 @@
         }
 
         async function cadastrar() {
-            console.log("cadastrar")
-
             window.open("/cadastro", "_self");
         }
 
@@ -95,7 +96,8 @@
             el: '#app',
             data: {
                 cpf: "",
-                senha: ""
+                senha: "",
+                mensagem: ""
             },
             methods: {
                 doCadastrar: cadastrar,

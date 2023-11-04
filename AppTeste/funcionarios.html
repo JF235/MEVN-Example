@@ -28,12 +28,11 @@
 
         <headercomponent></headercomponent>
 
-
         <div class="menu">
             <form id="employeeForm" @submit.prevent>
                 <div>
-                    <label for="id">ID:</label>
-                    <input type="text" id="id" v-model="id">
+                    <label for="cpf">CPF:</label>
+                    <input type="text" id="cpf" v-model="cpf">
                 </div>
 
                 <div>
@@ -46,6 +45,11 @@
                     <input type="text" id="cargo" v-model="cargo">
                 </div>
 
+                <div>
+                    <label for="senha">Senha:</label>
+                    <input type="text" id="senha" v-model="senha">
+                </div>
+
                 <button @click="doInserir">Inserir</button>
                 <button @click="doEditar">Editar</button>
                 <button @click="doRemover">Remover</button>
@@ -54,20 +58,29 @@
                 {{ mensagem }}
 
             </form>
-            
+
         </div>
     </div>
 
     <script type="module">
+
+        function isFormsEmpty() {
+            // Verifica se os campos do formulário estão vazios
+            const listaDeItens = [app.cpf, app.nome, app.cargo, app.senha];
+            for (var item in listaDeItens) {
+                if (item == undefined || item.length === 0)
+                    return true;
+            }
+            return false;
+        }
+
         async function goToFuncionarios() {
             // do nothing
         }
 
         async function inserir() {
-            // Verificar se todos os campos estão devidamente preenchidos
-            if (app.id == undefined || app.id.length == 0 ||
-                app.nome == undefined || app.nome.length == 0 ||
-                app.cargo == undefined || app.cargo.length == 0) {
+
+            if (isFormsEmpty()) {
                 app.mensagem = "Campos não preenchidos de forma devida.";
                 return;
             }
@@ -75,8 +88,9 @@
             // Encapsular os dados da requisição e cria a requisição
             // POST com o axios
             var data = {
-                "id": app.id,
+                "cpf": app.cpf,
                 "nome": app.nome,
+                "senha": app.senha,
                 "cargo": app.cargo
             };
             var request = axios({
@@ -95,34 +109,35 @@
         }
 
         async function editar() {
-            if (app.id == undefined || app.id.length == 0) {
-                app.mensagem = "preencha o ID do funcionário";
+            if (isFormsEmpty()) {
+                app.mensagem = "Campos não preenchidos de forma devida.";
                 return;
             }
 
-            // Verifica campos do formulário
-            if ((app.nome == undefined || app.nome.length == 0) &&
-                (app.cargo == undefined || app.cargo.length == 0)) {
-                app.mensagem = "preencha os campos que deseja editar";
+            // Percorre todos os elementos e remove quais estão vazios
+            var novosDados = { cpf: app.cpf, nome: app.nome, cargo: app.cargo, senha: app.senha };
+            for (var chave in novosDados) {
+                if (novosDados[chave] == undefined || novosDados[chave].length === 0) {
+                    delete novosDados[chave];
+                }
+            }
+
+            // Se não sobrar nenhum elemento, mostra erro
+            if (keys(novosDados).length === 0){
+                app.mensagem = "Campos não preenchidos de forma devida.";
                 return;
             }
 
-            var novosDados = {};
-            if (app.nome !== undefined || app.nome.length !== 0)
-                novosDados.nome = app.nome;
-            if (app.cargo !== undefined || app.cargo.length !== 0)
-                novosDados.cargo = app.cargo;
-
-            // Atualiza as novas infromações
+            // Atualiza as novas informações
             var data = {
-                "id": app.id,
+                "cpf": app.cpf,
                 "novosDados": novosDados,
             };
 
             // Prepara a requisição
             var request = axios({
                 "method": "put",
-                "url": "/funcionarios/" + app.id,
+                "url": "/funcionarios/" + app.cpf,
                 "headers": { "Content-Type": "application/json" },
                 "data": data
             });
@@ -137,18 +152,18 @@
         }
 
         async function remover() {
-            if (app.id == undefined || app.id.length == 0) {
-                app.mensagem = "preencha o ID do funcionário";
+            if (app.cpf == undefined || app.cpf.length == 0) {
+                app.mensagem = "preencha o cpf do funcionário";
                 return;
             }
 
             var data = {
-                "id": app.id,
+                "cpf": app.cpf,
             };
 
             var request = axios({
                 "method": "delete",
-                "url": "/funcionarios/" + app.id,
+                "url": "/funcionarios/" + app.cpf,
                 "data": data
             });
             try {
@@ -165,7 +180,7 @@
                 "method": "get",
                 "url": "/funcionarios/all"
             });
-            
+
             try {
                 var response = await request
                 app.mensagem = response.data.funcionarios;
@@ -182,9 +197,10 @@
         var app = new Vue({
             el: '#app',
             data: {
-                id: "",
+                cpf: "",
                 nome: "",
                 cargo: "",
+                senha: "",
                 mensagem: ""
             },
             methods: {

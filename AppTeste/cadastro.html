@@ -53,6 +53,8 @@
                 <br>
             </form>
 
+            {{ mensagem }}
+
         </div>
 
     </div>
@@ -82,10 +84,10 @@
 
             // Realizar requisição de forma assíncrona
             try {
-                response = await request
-                console.log(response.data.resultado)
+                var response = await request
+                app.mensagem = response.data.resultado;
             } catch (error) {
-                console.log(response.data.resultado)
+                app.mensagem = response.data.resultado
             }
         }
 
@@ -103,7 +105,8 @@
             data: {
                 nome: "",
                 senha: "",
-                cpf: ""
+                cpf: "",
+                mensagem: ""
             },
             methods: {
                 doEnviar: enviar,

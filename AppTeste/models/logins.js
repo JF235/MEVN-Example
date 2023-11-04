@@ -5,7 +5,6 @@ var Schema = mongoose.Schema;
 // Modifique aqui
 var loginsSchema = new Schema({
     "cpf": String,
-    "datanascimento": String,
     "nome": String,
     "cargo": String,
     "senha": String

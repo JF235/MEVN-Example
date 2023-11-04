@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // Banco de dados de funcionários cadastrados
-var funcionariosDB = require('../models/funcionarios');
+var loginsDB = require('../models/logins');
 
 // Envia a página de gerenciamento de funcionários
 function sendFuncionariosFile(req, res) {  // GET
@@ -18,24 +18,25 @@ async function inserirFuncionario(req, res) {  // POST
   // Verificar autenticação
   // not implemented...
 
-  // Verificar se o ID usado já não está no Banco de Dados, 
-  // fazendo uma query com id
-  var query = { "id": req.body.id };
+  // Consulta banco de dados por cpf
+  var query = { "cpf": req.body.cpf };
   var response = {};
-  var data = await funcionariosDB.findOne(query);
+  var data = await loginsDB.findOne(query);
   console.log(data);
 
-  // ID já existente
+  // cpf já existente
   if (data !== null) {
     response = { "resultado": "funcionario ja existente" };
     res.json(response);
     return;
   }
 
-  // ID de funcionário novo
+  // cpf de funcionário novo
   // Salva no banco de dados
-  var db = new funcionariosDB(); // Conexão com o banco de dados
-  db.id = req.body.id;
+  var db = new loginsDB(); // Conexão com o banco de dados
+  db.cpf = req.body.cpf;
+  db.datanascimento = req.body.datanascimento;
+  db.senha = req.body.senha;
   db.nome = req.body.nome;
   db.cargo = req.body.cargo;
   try {
@@ -54,12 +55,12 @@ async function alteraFuncionario(req, res) {   // PUT
 
   // Prepara a query
   var response = {};
-  var query = { "id": req.body.id };
+  var query = { "cpf": req.body.cpf };
   var data = req.body.novosDados;
 
   // Realiza a query e responde
   try {
-    var dat = await funcionariosDB.findOneAndUpdate(query, data);
+    var dat = await loginsDB.findOneAndUpdate(query, data);
     if (dat == null)
       response = { "resultado": "funcionario inexistente" };
     else
@@ -77,11 +78,11 @@ async function deletaFuncionario(req, res) {   // DELETE (remove)
 
   // Monta requisição
   var response = {};
-  var query = { "id": req.body.id };
+  var query = { "cpf": req.body.cpf };
 
   // Remove
   try {
-    var data = await funcionariosDB.findOneAndRemove(query);
+    var data = await loginsDB.findOneAndRemove(query);
     if (data == null)
       response = { "resultado": "funcionário inexistente" };
     else
@@ -95,14 +96,27 @@ async function deletaFuncionario(req, res) {   // DELETE (remove)
 async function obterTodosFuncionarios(req, res) {  // GET
   // Obtém todos os funcionários
   res.header('Cache-Control', 'no-cache');
-  
+
   var response = {};
 
   try {
-    var data = await funcionariosDB.find({});
+    var data = await loginsDB.find({});
     response = { "funcionarios": data };
   } catch (err) {
     response = { "resultado": "falha de acesso ao BD" };
+  }
+  res.json(response);
+}
+
+async function removerTodosFuncionarios(req, res) { // DELETE
+  // Remove todos os funcionários
+  var response = {};
+
+  try {
+    await loginsDB.deleteMany({});
+    response = { "resultado": "Todos os funcionários foram removidos com sucesso" };
+  } catch (err) {
+    response = { "resultado": "Falha ao remover funcionários do BD" };
   }
   res.json(response);
 }
@@ -111,11 +125,12 @@ router.route('/')
   .get(sendFuncionariosFile)
   .post(inserirFuncionario);
 
-router.route('/:id')
+router.route('/:cpf')
   .put(alteraFuncionario)
   .delete(deletaFuncionario);
 
 router.route('/all')
-  .get(obterTodosFuncionarios);
+  .get(obterTodosFuncionarios)
+  .delete(removerTodosFuncionarios);
 
 module.exports = router;

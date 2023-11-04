@@ -30,6 +30,7 @@ async function criarUsuario(req, res) {  // POST
   db.cpf = req.body.cpf;
   db.nome = req.body.nome;
   db.senha = req.body.senha;
+  db.cargo = "user";
   try {
     db.save();
     response = { "resultado": "usuario inserido" };
