@@ -20,6 +20,7 @@
     </style>
 
     <link rel="stylesheet" href="stylesheets/menu.css">
+    <link rel="stylesheet" href="stylesheets/forms.css">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 
 </head>
@@ -31,22 +32,22 @@
 
         <div class="menu">
             <form id="employeeForm" @submit.prevent>
-                <div>
+                <div class="input">
                     <label for="cpf">CPF:</label>
                     <input type="text" id="cpf" v-model="cpf">
                 </div>
 
-                <div>
+                <div class="input">
                     <label for="nome">Nome:</label>
                     <input type="text" id="nome" v-model="nome">
                 </div>
 
-                <div>
+                <div class="input">
                     <label for="cargo">Cargo:</label>
                     <input type="text" id="cargo" v-model="cargo">
                 </div>
 
-                <div>
+                <div class="input">
                     <label for="senha">Senha:</label>
                     <input type="text" id="senha" v-model="senha">
                 </div>
@@ -191,7 +192,7 @@
             }
         }
 
-        import header from "./vue/header.js";
+        import header from "./vue/headerAdmin.js";
         Vue.component("headercomponent", header);
 
         // Criando appVue

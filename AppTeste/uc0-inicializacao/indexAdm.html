@@ -26,11 +26,7 @@
 <body>
     <div id="app">
 
-        <div class="menu" style="display: flex;justify-content: space-around;">
-            <a class="link" @click="doGoToFunc">Gerenciar Funcionarios</a>
-
-            <a class="link" @click="doLogout">Logout</a>
-        </div>
+        <headeradm></headeradm>
 
 
         <img src="https://media.glassdoor.com/companyupdate/w900/1045646/transport-enterprise-leasing-companyupdate-1653680284062.png?signature=9b01a811e3f853f1deb12104e103a0d1c2552bfacce76797ac57b3856de96154"
@@ -39,30 +35,9 @@
     </div>
 
     <script type="module">
-        // Métodos
-        async function goToFuncionarios() {
-            console.log("Redirecting...")
 
-            window.open("/funcionarios", "_self");
-        }
-
-        async function logout() {
-            var request = axios({
-                "method": "delete",
-                "url": "/login"
-            });
-            
-            try {
-                var response = request
-                window.open("/index.html", "_self");
-            }
-            catch (error) {
-                app.mensagem = "Usuário não autenticado - Faça login primeiro"
-            }
-        }
-
-        import header from "./vue/header.js";
-        Vue.component("headercomponent", header);
+        import header from "./vue/headerAdmin.js";
+        Vue.component("headeradm", header);
 
         // Criando appVue
         var app = new Vue({
@@ -70,8 +45,6 @@
             data: {
             },
             methods: {
-                doGoToFunc: goToFuncionarios,
-                doLogout: logout,
             }
         })
     </script>
