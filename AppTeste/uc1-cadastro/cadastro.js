@@ -4,7 +4,7 @@ var router = express.Router();
 var loginsDB = require('../models/logins');
 
 function sendCadastroFile(req, res) {  // GET
-  var path = 'cadastro.html';
+  var path = './uc1-cadastro/cadastro.html';
   res.header('Cache-Control', 'no-cache');
   res.sendFile(path, { "root": "./" });
 }

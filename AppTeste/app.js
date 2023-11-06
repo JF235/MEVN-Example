@@ -4,11 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var funcionariosRouter = require('./routes/funcionarios')
-var loginRouter = require('./routes/login')
-var cadastroRouter = require('./routes/cadastro')
-var servicosRouter = require('./routes/servicos')
+var indexRouter = require('./uc0-inicializacao/index');
+var cadastroRouter = require('./uc1-cadastro/cadastro')
+var loginRouter = require('./uc2-login/login')
+var funcionariosRouter = require('./uc3-funcionarios/funcionarios')
+var servicosRouter = require('./uc4-servicos/servicos')
 
 var app = express();
 
