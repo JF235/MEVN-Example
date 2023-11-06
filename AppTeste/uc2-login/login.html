@@ -10,6 +10,8 @@
     <title>Login</title>
 
     <link rel="stylesheet" href="stylesheets/menu.css">
+    <link rel="stylesheet" href="stylesheets/forms.css">
+
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 
 </head>
@@ -22,32 +24,32 @@
         <div class="menu">
             <p>Login</p>
 
-            <form @submit.prevent>
-                <div>
-                    <label for="cpf">Cpf:</label>
-                    <input type="text" id="cpf" v-model="cpf" required>
+            <form class="form" @submit.prevent>
+                <div class="input">
+                    <input class="input-field" type="text" id="cpf" v-model="cpf" required>
+                    <label class="input-label" for="cpf">Cpf:</label>
+                </div>
+
+                <div class="input">
+                    <input class="input-field" type="text" id="senha" v-model="senha" required>
+                    <label class="input-label" for="senha">Senha:</label>
+                </div>
+
+                
+                <div class="buttons">
+
+                    <button class="button-35" @click="doEnviar">Enviar</button>
+                    <button class="button-35" @click="doCancelar">Cancelar</button>
                 </div>
 
                 <br>
-
-                <div>
-                    <label for="senha">Senha:</label>
-                    <input type="text" id="senha" v-model="senha" required>
-                </div>
-
-                <br>
-
-                <button @click="doEnviar">Enviar</button>
-                <button @click="doCancelar">Cancelar</button>
-
-                <br>
-                Clique para <a @click="doCadastrar" class="link">Fazer Cadastro</a>
             </form>
-
+            
+            Clique para <a @click="doCadastrar" class="link">Fazer Cadastro</a>
+            
             {{ mensagem }}
-
+            
         </div>
-
     </div>
 
     <script type="module">
@@ -74,10 +76,10 @@
             // Realizar requisição de forma assíncrona
             try {
                 var response = await request
-                app.mensagem = response.data
+                app.mensagem = response
                 window.open("/", "_self");
             } catch (error) {
-                app.mensagem = response.data
+                app.mensagem = response
             }
         }
 

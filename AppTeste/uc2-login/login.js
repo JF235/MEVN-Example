@@ -33,26 +33,25 @@ async function realizarLogin(req, res) {
 
   // ID inexistente
   if (data === null) {
-    response = { "resultado": "cpf nao encontrado" };
-    res.status(401).send("Falha na autenticação");
+    res.status(401).json({data: "Falha na autenticação"});
     return;
   }
 
   if (data.senha === req.body.senha) {
     var content = { "key": "secret", "cargo": data.cargo };
     res.cookie("userAuth", JSON.stringify(content), { "maxAge": 3600000 * 24 * 5 });
-    res.status(200).send("Sucesso");
+    res.status(200).json({data: "Sucesso"});
   } else {
-    res.status(401).send("Falha na autenticação");
+    res.status(401).json({data: "Falha na autenticação"});
   }
 }
 
 function logoutCurrentUser(req, res) {
   if (checkAuth(req, res) != 'unauthorized') {
     res.clearCookie('userAuth');	 // remove cookie no cliente
-    res.status(200).send('Sucesso');
+    res.status(200).json({data: "Sucesso"});
   } else {
-    res.status(401).send('Unauthorized');
+    res.status(401).json({data: "Unauthorized"});
   }
 }
 
