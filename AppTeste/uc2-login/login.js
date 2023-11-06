@@ -18,7 +18,7 @@ function checkAuth(req, res) {
 }
 
 function sendLoginFile(req, res) {  // GET
-  var path = 'login.html';
+  var path = './uc2-login/login.html';
   res.header('Cache-Control', 'no-cache');
   res.sendFile(path, { "root": "./" });
 }

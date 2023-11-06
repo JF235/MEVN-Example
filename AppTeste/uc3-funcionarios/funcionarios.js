@@ -9,7 +9,7 @@ function sendFuncionariosFile(req, res) {  // GET
   // Verificar autenticação
   // not implemented...
 
-  var path = 'funcionarios.html';
+  var path = './uc3-funcionarios/funcionarios.html';
   res.header('Cache-Control', 'no-cache');
   res.sendFile(path, { "root": "./" });
 }

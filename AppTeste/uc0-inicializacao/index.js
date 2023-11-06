@@ -23,9 +23,9 @@ function sendIndexFile(req, res) {  // GET
   var path;
   var cauth = checkAuth(req, res);
   if (cauth == 'unauthorized'){
-    path = 'index.html';
+    path = './uc0-inicializacao/index.html';
   } else if (cauth == 'admin'){
-    path = 'indexAdm.html';
+    path = './uc0-inicializacao/indexAdm.html';
   }
 
   res.sendFile(path, { "root": "./" });
@@ -34,7 +34,7 @@ function sendIndexFile(req, res) {  // GET
 function sendIndexHTMLFile(req, res) {  // GET
   res.header('Cache-Control', 'no-cache');
 
-  res.sendFile('index.html', { "root": "./" });
+  res.sendFile('uc0-inicializacao/index.html', { "root": "./" });
 }
 
 router.route('/')
