@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 .menu {
     background-color: #6e9ed3;
     /* Cor de fundo azul */
@@ -45,4 +46,68 @@
     color: #274761;
     font-size: 2em;
     text-decoration: none;
+=======
+.menu {
+    background-color: #6e9ed3;
+    /* Cor de fundo azul */
+    color: #c3dfe4;
+    /* Cor do texto branco */
+    border: 2px solid #274761;
+
+    text-align: center;
+    /* Centraliza o texto horizontalmente */
+
+    /* Define o espaçamento interno para o menu */
+    padding: 20px;
+
+    /* Define a largura máxima e centraliza o menu horizontalmente */
+    width: 80%;
+    margin: 0 auto;
+
+    /* Adiciona algum estilo adicional, como bordas arredondadas e sombra */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo padrão para o link */
+.link {
+    color: #fff;
+    /* Cor do link sem hover */
+    text-decoration: none;
+    /* Remove sublinhado padrão */
+    transition: color 0.3s;
+    /* Adiciona uma transição suave de cor */
+}
+
+/* Estilo quando o cursor passa por cima (hover) do link */
+.link:hover {
+    color: #204660;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#headercomponent h1 {
+    text-align: center;
+}
+
+#headercomponent h1 a {
+    color: #274761;
+    font-size: 2em;
+    text-decoration: none;
+}
+
+img {
+    margin-top: 30px;
+    margin-left: 20px;
+    height: 50px;
+    width: 120px;
+    align-items: center;
+}
+
+#ConteudoMenu{
+    display: flex;
+    justify-content: center;
+    height: 80px;
+    margin-bottom: 25px;
+>>>>>>> Stashed changes
 }
