@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <!DOCTYPE html>
 <html lang="en">
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
@@ -48,4 +49,38 @@
     </script>
 </body>
 
+=======
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="stylesheets/menu.css">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+
+
+</head>
+
+<body>
+    <div id="app">
+            <headercomponent></headercomponent>
+    </div>
+
+    <script type="module">
+        import header from "./vue/header.js";
+        Vue.component("headercomponent", header);
+
+        // Criando appVue
+        var app = new Vue({
+            el: '#app',
+            data: {
+            },
+        })
+    </script>
+</body>
+
+>>>>>>> Stashed changes
 </html>
