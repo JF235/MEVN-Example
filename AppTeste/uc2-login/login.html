@@ -35,7 +35,7 @@
                     <label class="input-label" for="senha">Senha:</label>
                 </div>
 
-                
+
                 <div class="buttons">
 
                     <button class="button-35" @click="doEnviar">Enviar</button>
@@ -45,10 +45,15 @@
                 <br>
             </form>
             
-            Clique para <a @click="doCadastrar" class="link">Fazer Cadastro</a>
-            
             {{ mensagem }}
-            
+
+            <br>
+
+            Clique para <a @click="doCadastrar" class="link">Fazer Cadastro</a>
+
+            <br>
+
+
         </div>
     </div>
 
@@ -74,12 +79,13 @@
             });
 
             // Realizar requisição de forma assíncrona
+            var response;
             try {
                 var response = await request
-                app.mensagem = response
+                app.mensagem = response.data.resultado
                 window.open("/", "_self");
             } catch (error) {
-                app.mensagem = response
+                app.mensagem = error.response.data.resultado
             }
         }
 

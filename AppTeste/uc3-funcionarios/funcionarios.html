@@ -119,7 +119,7 @@
             }
 
             // Se não sobrar nenhum elemento, mostra erro
-            if (keys(novosDados).length === 0) {
+            if (Object.keys(novosDados).length === 0) {
                 app.mensagem = "Campos não preenchidos de forma devida.";
                 return;
             }
