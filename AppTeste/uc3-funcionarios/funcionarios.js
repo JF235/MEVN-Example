@@ -1,13 +1,16 @@
 var express = require('express');
 var router = express.Router();
+const { checkAuth } = require('../ucx-auxiliar/checkAuth');
 
 // Banco de dados de funcionários cadastrados
 var loginsDB = require('../models/logins');
 
 // Envia a página de gerenciamento de funcionários
 function sendFuncionariosFile(req, res) {  // GET
-  // Verificar autenticação
-  // not implemented...
+  if (checkAuth(req, res) != 'admin') {
+    res.status(401).json({'resultado': 'Unauthorized'});
+    return;
+  }
 
   var path = './uc3-funcionarios/funcionarios.html';
   res.header('Cache-Control', 'no-cache');
@@ -16,7 +19,10 @@ function sendFuncionariosFile(req, res) {  // GET
 
 async function inserirFuncionario(req, res) {  // POST
   // Verificar autenticação
-  // not implemented...
+  if (checkAuth(req, res) != 'admin') {
+    res.status(401).json({'resultado': 'Unauthorized'});
+    return;
+  }
 
   // Consulta banco de dados por cpf
   var query = { "cpf": req.body.cpf };
@@ -51,7 +57,10 @@ async function inserirFuncionario(req, res) {  // POST
 
 async function alteraFuncionario(req, res) {   // PUT
   // Verifica autenticação
-  // ...
+  if (checkAuth(req, res) != 'admin') {
+    res.status(401).json({'resultado': 'Unauthorized'});
+    return;
+  }
 
   // Prepara a query
   var response = {};
@@ -74,8 +83,10 @@ async function alteraFuncionario(req, res) {   // PUT
 
 async function deletaFuncionario(req, res) {   // DELETE (remove)
   // Verifica autenticação
-  // ...
-
+  if (checkAuth(req, res) != 'admin') {
+    res.status(401).json({'resultado': 'Unauthorized'});
+    return;
+  }
   // Monta requisição
   var response = {};
   var query = { "cpf": req.body.cpf };
@@ -94,6 +105,11 @@ async function deletaFuncionario(req, res) {   // DELETE (remove)
 }
 
 async function obterTodosFuncionarios(req, res) {  // GET
+  if (checkAuth(req, res) != 'admin') {
+    res.status(401).json({'resultado': 'Unauthorized'});
+    return;
+  }
+  
   // Obtém todos os funcionários
   res.header('Cache-Control', 'no-cache');
 
@@ -109,6 +125,11 @@ async function obterTodosFuncionarios(req, res) {  // GET
 }
 
 async function removerTodosFuncionarios(req, res) { // DELETE
+  if (checkAuth(req, res) != 'admin') {
+    res.status(401).json({'resultado': 'Unauthorized'});
+    return;
+  }
+
   // Remove todos os funcionários
   var response = {};
 

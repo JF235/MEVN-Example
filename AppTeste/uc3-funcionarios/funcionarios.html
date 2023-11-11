@@ -8,18 +8,11 @@
     <title>Formulário do Funcionário</title>
 
     <style>
-        #employeeForm {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        #employeeForm div {
-            margin: 10px;
-        }
+        
     </style>
 
     <link rel="stylesheet" href="stylesheets/menu.css">
+    <link rel="stylesheet" href="stylesheets/forms.css">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 
 </head>
@@ -30,31 +23,33 @@
         <headercomponent></headercomponent>
 
         <div class="menu">
-            <form id="employeeForm" @submit.prevent>
-                <div>
-                    <label for="cpf">CPF:</label>
-                    <input type="text" id="cpf" v-model="cpf">
+            <form class="form" @submit.prevent>
+                <div class="input">
+                    <input class="input-field" type="text" id="cpf" v-model="cpf" required="">
+                    <label class="input-label" for="cpf">CPF:</label>
                 </div>
 
-                <div>
-                    <label for="nome">Nome:</label>
-                    <input type="text" id="nome" v-model="nome">
+                <div class="input">
+                    <input class="input-field" type="text" id="nome" v-model="nome" required="">
+                    <label class="input-label" for="nome">Nome:</label>
                 </div>
 
-                <div>
-                    <label for="cargo">Cargo:</label>
-                    <input type="text" id="cargo" v-model="cargo">
+                <div class="input">
+                    <input class="input-field" type="text" id="cargo" v-model="cargo" required="">
+                    <label class="input-label" for="cargo">Cargo:</label>
                 </div>
 
-                <div>
-                    <label for="senha">Senha:</label>
-                    <input type="text" id="senha" v-model="senha">
+                <div class="input">
+                    <input class="input-field" type="text" id="senha" v-model="senha" required="">
+                    <label class="input-label" for="senha">Senha:</label>
                 </div>
 
-                <button @click="doInserir">Inserir</button>
-                <button @click="doEditar">Editar</button>
-                <button @click="doRemover">Remover</button>
-                <button @click="doListar">Listar Funcionários</button>
+                <div class="buttons">
+                    <button class="button-35" @click="doInserir">Inserir</button>
+                    <button class="button-35" @click="doEditar">Editar</button>
+                    <button class="button-35" @click="doRemover">Remover</button>
+                    <button class="button-35" @click="doListar">Listar Funcionários</button>
+                </div>
 
                 {{ mensagem }}
 
@@ -124,7 +119,7 @@
             }
 
             // Se não sobrar nenhum elemento, mostra erro
-            if (keys(novosDados).length === 0){
+            if (Object.keys(novosDados).length === 0) {
                 app.mensagem = "Campos não preenchidos de forma devida.";
                 return;
             }
@@ -191,7 +186,7 @@
             }
         }
 
-        import header from "./vue/header.js";
+        import header from "./vue/headerAdmin.js";
         Vue.component("headercomponent", header);
 
         // Criando appVue

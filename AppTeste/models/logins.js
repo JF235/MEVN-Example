@@ -1,5 +1,5 @@
 var mongoose = require("mongoose");
-conn1 = mongoose.createConnection('mongodb://mongo:27017/', {useNewUrlParser: true});
+conn1 = mongoose.createConnection('mongodb://mongo:27017/loginsDB', {useNewUrlParser: true});
 var Schema = mongoose.Schema;
 
 // Modifique aqui
