@@ -26,6 +26,12 @@ function sendIndexFile(req, res) {  // GET
     path = './uc0-inicializacao/index.html';
   } else if (cauth == 'admin'){
     path = './uc0-inicializacao/indexAdm.html';
+  } else if (cauth == 'motorista'){
+    path = './uc0-inicializacao/indexMotorista.html';
+  } else if (cauth == 'vendedor'){
+    path = './uc0-inicializacao/indexVendedor.html';
+  } else if (cauth == 'user'){
+    path = './uc0-inicializacao/indexUser.html';
   }
 
   res.sendFile(path, { "root": "./" });

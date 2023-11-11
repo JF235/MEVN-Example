@@ -15,25 +15,17 @@
     <div id="app">
 
         <div class="menu" style="display: flex;justify-content: space-around;">
-            <a class="link" @click="doGoToFunc">Gerenciar Funcionarios</a>
-
+            <div class="usuario" >
+                <p>{{ user }}</p><br>
+                <p>{{ funcao }}</p>
+            </div>            
             <a class="link" @click="doLogout">Logout</a>
         </div>
-
-
-        <img src="https://media.glassdoor.com/companyupdate/w900/1045646/transport-enterprise-leasing-companyupdate-1653680284062.png?signature=9b01a811e3f853f1deb12104e103a0d1c2552bfacce76797ac57b3856de96154"
-            alt="Caminhoes">
 
     </div>
 
     <script type="module">
         // Métodos
-        async function goToFuncionarios() {
-            console.log("Redirecting...")
-
-            window.open("/funcionarios", "_self");
-        }
-
         async function logout() {
             var request = axios({
                 "method": "delete",
@@ -56,6 +48,8 @@
         var app = new Vue({
             el: '#app',
             data: {
+                user: '',
+                funcao: ''
             },
             methods: {
                 doGoToFunc: goToFuncionarios,
