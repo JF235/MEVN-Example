@@ -8,7 +8,8 @@ var indexRouter = require('./uc0-inicializacao/index');
 var cadastroRouter = require('./uc1-cadastro/cadastro')
 var loginRouter = require('./uc2-login/login')
 var funcionariosRouter = require('./uc3-funcionarios/funcionarios')
-var servicosRouter = require('./uc4-servicos/servicos')
+var viagensRouter = require('./uc4-viagens/viagens')
+var servicosRouter = require('./uc5-servicos/servicos')
 
 var app = express();
 
@@ -27,6 +28,7 @@ app.use('/', indexRouter);
 app.use('/funcionarios', funcionariosRouter);
 app.use('/login', loginRouter);
 app.use('/cadastro', cadastroRouter);
+app.use('/viagens', viagensRouter);
 app.use('/servicos', servicosRouter);
 
 

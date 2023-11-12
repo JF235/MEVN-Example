@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário de Viagem</title>
+
+    <style>
+        
+    </style>
+
+    <link rel="stylesheet" href="stylesheets/menu.css">
+    <link rel="stylesheet" href="stylesheets/forms.css">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+
+</head>
+
+<body>
+    <div id="app">
+
+        <headercomponent></headercomponent>
+
+        <div class="menu">
+            <form class="form" @submit.prevent>
+                <div class="input">
+                    <input class="input-field" type="text" id="id" v-model="id" required="">
+                    <label class="input-label" for="id">id:</label>
+                </div>
+
+                <div class="input">
+                    <input class="input-field" type="text" id="partida" v-model="partida" required="">
+                    <label class="input-label" for="partida">partida:</label>
+                </div>
+
+                <div class="input">
+                    <input class="input-field" type="text" id="chegada" v-model="chegada" required="">
+                    <label class="input-label" for="chegada">chegada:</label>
+                </div>
+
+                <div class="input">
+                    <input class="input-field" type="text" id="data" v-model="data" required="">
+                    <label class="input-label" for="data">data:</label>
+                </div>
+
+                <div class="buttons">
+                    <button class="button-35" @click="doInserir">Inserir</button>
+                    <button class="button-35" @click="doEditar">Editar</button>
+                    <button class="button-35" @click="doRemover">Remover</button>
+                    <button class="button-35" @click="doListar">Listar Viagens</button>
+                </div>
+
+                {{ mensagem }}
+
+            </form>
+
+        </div>
+    </div>
+
+    <script type="module">
+
+        function isFormsEmpty() {
+            // Verifica se os campos do formulário estão vazios
+            const listaDeItens = [app.id, app.partida, app.chegada, app.data];
+            for (var item in listaDeItens) {
+                if (item == undefined || item.length === 0)
+                    return true;
+            }
+            return false;
+        }
+
+        async function inserir() {
+
+            if (isFormsEmpty()) {
+                app.mensagem = "Campos não preenchidos de forma devida.";
+                return;
+            }
+
+            // Encapsular os dados da requisição e cria a requisição
+            // POST com o axios
+            var data = {
+                "id": app.id,
+                "partida": app.partida,
+                "chegada": app.chegada,
+                "data": app.data,
+            };
+            var request = axios({
+                "method": "post",
+                "url": "/viagens",
+                "data": data
+            });
+
+            // Realizar requisição de forma assíncrona
+            try {
+                var response = await request
+                app.mensagem = response.data.resultado;
+            } catch (error) {
+                app.mensagem = error.data.resultado;
+            }
+        }
+
+        async function editar() {
+            if (isFormsEmpty()) {
+                app.mensagem = "Campos não preenchidos de forma devida.";
+                return;
+            }
+
+            // Percorre todos os elementos e remove quais estão vazios
+            var novosDados = { id: app.id, partida: app.partida, chegada: app.chegada, data: app.data };
+            for (var chave in novosDados) {
+                if (novosDados[chave] == undefined || novosDados[chave].length === 0) {
+                    delete novosDados[chave];
+                }
+            }
+
+            // Se não sobrar nenhum elemento, mostra erro
+            if (Object.keys(novosDados).length === 0) {
+                app.mensagem = "Campos não preenchidos de forma devida.";
+                return;
+            }
+
+            // Atualiza as novas informações
+            var data = {
+                "id": app.id,
+                "novosDados": novosDados,
+            };
+
+            // Prepara a requisição
+            var request = axios({
+                "method": "put",
+                "url": "/viagens/" + app.id,
+                "headers": { "Content-Type": "application/json" },
+                "data": data
+            });
+
+            // Faz a requisição
+            try {
+                var response = await request
+                app.mensagem = response.data.resultado;
+            } catch (error) {
+                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+            }
+        }
+
+        async function remover() {
+            if (app.id == undefined || app.id.length == 0) {
+                app.mensagem = "preencha o id da viagem";
+                return;
+            }
+
+            var data = {
+                "id": app.id,
+            };
+
+            var request = axios({
+                "method": "delete",
+                "url": "/viagens/" + app.id,
+                "data": data
+            });
+            try {
+                var response = await request
+                app.mensagem = response.data.resultado;
+                app.payload = response;
+            } catch (error) {
+                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+            }
+        }
+
+        async function listar() {
+            var request = axios({
+                "method": "get",
+                "url": "/viagens/all"
+            });
+
+            try {
+                var response = await request
+                app.mensagem = response.data.viagens;
+                app.payload = response;
+            } catch (error) {
+                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+            }
+        }
+
+        import header from "./vue/headerAdmin.js";
+        Vue.component("headercomponent", header);
+
+        // Criando appVue
+        var app = new Vue({
+            el: '#app',
+            data: {
+                id: "",
+                partida: "",
+                chegada: "",
+                data: "",
+                mensagem: ""
+            },
+            methods: {
+                doInserir: inserir,
+                doEditar: editar,
+                doRemover: remover,
+                doListar: listar,
+            },
+        })
+    </script>
+
+</body>
+
+</html>

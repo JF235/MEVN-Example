@@ -25,6 +25,12 @@ async function goToHome() {
     window.open("/", "_self");
 }
 
+async function goToViagens() {
+    console.log("Redirecting...")
+
+    window.open("/viagens", "_self");
+}
+
 var header;
 export default header = {
     template: `
@@ -42,6 +48,8 @@ export default header = {
     <div class="menu" style="display: flex;justify-content: space-around;">
         <a class="link" @click="doGoToFunc">Gerenciar Funcionarios</a>
 
+        <a class="link" @click="doGoToViagens">Gerenciar Viagens</a>
+
         <a class="link" @click="doLogout">Logout</a>
     </div>
   
@@ -51,6 +59,7 @@ export default header = {
     methods: {
         doGoToHome: goToHome,
         doGoToFunc: goToFuncionarios,
+        doGoToViagens: goToViagens,
         doLogout: logout,
     },
 };
