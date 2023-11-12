@@ -7,7 +7,7 @@ function sendSolEntregaFile(req, res) {  // GET
     res.header('Cache-Control', 'no-cache');
 
     // Se não tiver ninguém logado
-    var path = './uc4-servicos/solicitacaoEntrega.html';
+    var path = './uc5-servicos/solicitacaoEntrega.html';
     res.sendFile(path, { "root": "./" });
 }
 
@@ -16,7 +16,7 @@ function sendCompraPassagFile(req, res) {  // GET
     res.header('Cache-Control', 'no-cache');
 
     // Se não tiver ninguém logado
-    var path = './uc4-servicos/solicitacaoEntrega.html';
+    var path = './uc5-servicos/solicitacaoEntrega.html';
     res.sendFile(path, { "root": "./" });
 }
 
@@ -25,7 +25,7 @@ function sendEscolhaViagemFile(req, res) {  // GET
     res.header('Cache-Control', 'no-cache');
 
     // Se não tiver ninguém logado
-    var path = './uc4-servicos/escolhaViagem.html';
+    var path = './uc5-servicos/escolhaViagem.html';
     res.sendFile(path, { "root": "./" });
 }
 
