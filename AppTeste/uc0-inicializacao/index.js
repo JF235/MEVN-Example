@@ -13,6 +13,8 @@ function sendIndexFile(req, res) {  // GET
     path = './uc0-inicializacao/index.html';
   } else if (cauth == 'admin'){
     path = './uc0-inicializacao/indexAdm.html';
+  } else if (cauth == 'user'){
+    path =  './uc0-inicializacao/indexUsr.html';
   }
 
   res.sendFile(path, { "root": "./" });
