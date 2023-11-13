@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+
+    <link rel="stylesheet" href="stylesheets/menu.css">
+    <link rel="stylesheet" href="stylesheets/dropdown.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+
+</head>
+
+<body>
+    <div id="app">
+
+        <headeruser></headeruser>
+
+    </div>
+
+    <script type="module">
+
+        import header from "./vue/headerUser.js";
+        Vue.component("headeruser", header);
+
+        // Criando appVue
+        var app = new Vue({
+            el: '#app',
+            data: {
+            },
+            methods: {
+            }
+        })
+    </script>
+</body>
+
+</html>
