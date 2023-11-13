@@ -20,7 +20,10 @@
     </style>
 
     <link rel="stylesheet" href="../stylesheets/menu.css">
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../stylesheets/dropdown.css">
+    <link rel="stylesheet" href="../stylesheets/forms.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
 
 </head>
 
@@ -32,23 +35,26 @@
         <div class="menu">
             <h2>Escolha de viagem</h2>
 
-            <form id="employeeForm" @submit.prevent>
-                <div>
-                    <label for="partida">Partida:</label>
-                    <input type="text" id="partida" v-model="partida">
+            <form class="form" @submit.prevent>
+                <div class="input">
+                    <input class="input-field" type="text" id="partida" v-model="partida" required>
+                    <label class="input-label" for="partida">Partida:</label>
                 </div>
 
-                <div>
-                    <label for="chegada">Chegada:</label>
-                    <input type="text" id="chegada" v-model="chegada">
-                </div>
+                <div class="input">
+                    <input class="input-field" type="text" id="chegada" v-model="chegada" required>
+                    <label class="input-label" for="chegada">Chegada:</label>
+                </div class="input">
 
-                <div>
-                    <label for="data">Data:</label>
-                    <input type="text" id="data" v-model="data">
+                <div class="input">
+                    <input class="input-field" type="text" id="data" v-model="data" required>
+                    <label class="input-label" for="data">Data:</label>
                 </div>
-
-                <button @click="doBuscar">Buscar</button><br>
+                
+                <div class="buttons">
+                    <button class="button-35" @click="doBuscar">Buscar</button>
+                </div>
+                
 
                 {{ mensagem }}
             </form>
@@ -61,7 +67,7 @@
             console.log("procurar por:\nPartida: " + app.partida + "\nChegada: " + app.chegada + "\nData: " + app.data)
         }
 
-        import header from "../vue/headerAdmin.js";
+        import header from "../vue/headerUser.js";
         Vue.component("headercomponent", header);
 
         // Criando appVue
