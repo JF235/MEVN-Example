@@ -20,11 +20,11 @@ async function goToHome() {
 }
 
 async function goToComprarPassagem() {
-    console.log("Passagem...")
+    window.open("servicos/escolhaViagem", self);
 }
 
 async function goToSolicitarEntrega() {
-    console.log("Entrega...")
+    window.open("servicos/escolhaViagem", self);
 }
 
 var header;
@@ -35,7 +35,7 @@ export default header = {
         <h1>
             <a href="#" @click="doGoToHome">NOME DA EMPRESA</a>
         </h1>
-        <img src="images/transport-enterprise-leasing-companyupdate-1653680284062.png" alt="Caminhoes">
+        <img src="../images/transport-enterprise-leasing-companyupdate-1653680284062.png" alt="Caminhoes">
 
     </div>
 
