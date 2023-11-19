@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="../stylesheets/menu.css">
     <link rel="stylesheet" href="../stylesheets/dropdown.css">
     <link rel="stylesheet" href="../stylesheets/forms.css">
+    <link rel="stylesheet" href="../stylesheets/viagensTable.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
 
@@ -35,7 +37,7 @@
         <div class="menu">
             <h2>Escolha de viagem</h2>
 
-            <form class="form" @submit.prevent>
+            <form class="form" v-if="forms" @submit.prevent>
                 <div class="input">
                     <input class="input-field" type="text" id="partida" v-model="partida" required>
                     <label class="input-label" for="partida">Partida:</label>
@@ -50,37 +52,112 @@
                     <input class="input-field" type="text" id="data" v-model="data" required>
                     <label class="input-label" for="data">Data:</label>
                 </div>
-                
+
                 <div class="buttons">
                     <button class="button-35" @click="doBuscar">Buscar</button>
                 </div>
-                
 
                 {{ mensagem }}
             </form>
+            <div v-else>
+                <table class="viagensTable">
+                    <thead>
+                        <tr>
+                            <th> Partida </th>
+                            <th> Chegada </th>
+                            <th> Data </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="tableEntry in tableData">
+                            <td> {{ tableEntry.partida }} </td>
+                            <td> {{ tableEntry.chegada }} </td>
+                            <td> {{ tableEntry.data }} </td>
+                            <td><button class="button-35" @click="">✔</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <div class="buttons">
+                    <button class="button-35" @click="doVoltar">Voltar</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script type="module">
 
-        async function buscar() {
-            console.log("procurar por:\nPartida: " + app.partida + "\nChegada: " + app.chegada + "\nData: " + app.data)
-        }
-
         import header from "../vue/headerUser.js";
         Vue.component("headercomponent", header);
+
+
+        function isFormsEmpty() {
+            // Verifica se os campos do formulário estão vazios
+            var listaDeItens = [app.partida, app.chegada, app.data];
+
+            for (var i = 0; i < listaDeItens.length; i++) {
+                if (listaDeItens[i] == undefined || listaDeItens[i].length === 0)
+                    return true;
+            }
+            return false;
+        }
+
+        async function buscar() {
+            if (isFormsEmpty()) {
+                app.mensagem = "Campos não preenchidos de forma devida.";
+                return;
+            }
+
+            // Atualiza as novas informações
+            var data = {
+                "partida": app.partida,
+                "chegada": app.chegada,
+                "data": app.data,
+            };
+
+            // Prepara a requisição
+            var request = axios({
+                "method": "post",
+                "url": "escolhaViagem",
+                "headers": { "Content-Type": "application/json" },
+                "data": data
+            });
+
+            // Faz a requisição
+            try {
+                var response = await request
+                app.tableData = response.data.viagens;
+                if (app.tableData.length !== 0) {
+                    app.forms = false;
+                }
+            } catch (error) {
+                console.log(error.response)
+                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+            }
+        }
+
+        function voltar() {
+            app.forms = true;
+            app.tableData = [];
+        }
 
         // Criando appVue
         var app = new Vue({
             el: '#app',
             data: {
+                "id": "",
                 "partida": "",
                 "chegada": "",
                 "data": "",
-                "mensagem": ""
+                "mensagem": "",
+                "forms": true,
+                tableData: [],
             },
             methods: {
                 doBuscar: buscar,
+                doVoltar: voltar,
             },
         })
     </script>

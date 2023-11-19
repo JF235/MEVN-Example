@@ -20,11 +20,11 @@ async function goToHome() {
 }
 
 async function goToComprarPassagem() {
-    window.open("servicos/escolhaViagem", self);
+    window.open("http://localhost:3000/servicos/escolhaViagem", self);
 }
 
 async function goToSolicitarEntrega() {
-    window.open("servicos/escolhaViagem", self);
+    window.open("http://localhost:3000/servicos/escolhaViagem", self);
 }
 
 var header;
