@@ -7,25 +7,13 @@
     <meta charset="UTF-8">
     <title>Escolha de Viagem</title>
 
-    <style>
-        #employeeForm {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        #employeeForm div {
-            margin: 10px;
-        }
-    </style>
-
-    <link rel="stylesheet" href="../stylesheets/menu.css">
-    <link rel="stylesheet" href="../stylesheets/dropdown.css">
-    <link rel="stylesheet" href="../stylesheets/forms.css">
-    <link rel="stylesheet" href="../stylesheets/viagensTable.css">
+    <link rel="stylesheet" href="/stylesheets/menu.css">
+    <link rel="stylesheet" href="/stylesheets/dropdown.css">
+    <link rel="stylesheet" href="/stylesheets/forms.css">
+    <link rel="stylesheet" href="/stylesheets/viagensTable.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
 
 </head>
 
@@ -73,7 +61,7 @@
                             <td> {{ tableEntry.partida }} </td>
                             <td> {{ tableEntry.chegada }} </td>
                             <td> {{ tableEntry.data }} </td>
-                            <td><button class="button-35" @click="">✔</button>
+                            <td><button class="button-35" @click="doSelecionar(tableEntry.id)">✔</button>
                             </td>
                         </tr>
                     </tbody>
@@ -89,7 +77,7 @@
 
     <script type="module">
 
-        import header from "../vue/headerUser.js";
+        import header from "/vue/headerUser.js";
         Vue.component("headercomponent", header);
 
 
@@ -131,6 +119,8 @@
                 app.tableData = response.data.viagens;
                 if (app.tableData.length !== 0) {
                     app.forms = false;
+                } else {
+                    app.mensagem = "Nenhuma viagem foi encontrada."
                 }
             } catch (error) {
                 console.log(error.response)
@@ -141,6 +131,10 @@
         function voltar() {
             app.forms = true;
             app.tableData = [];
+        }
+
+        async function selecionar(id) {
+            window.open("/servicos/compraPassagem/" + id, self);
         }
 
         // Criando appVue
@@ -158,6 +152,7 @@
             methods: {
                 doBuscar: buscar,
                 doVoltar: voltar,
+                doSelecionar: selecionar,
             },
         })
     </script>

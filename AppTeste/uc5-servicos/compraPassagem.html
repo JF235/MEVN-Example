@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Compra de Passagem</title>
+
+    <link rel="stylesheet" href="/stylesheets/menu.css">
+    <link rel="stylesheet" href="/stylesheets/dropdown.css">
+    <link rel="stylesheet" href="/stylesheets/forms.css">
+    <link rel="stylesheet" href="/stylesheets/viagensTable.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+
+</head>
+
+<body>
+    <div id="app">
+
+        <headercomponent></headercomponent>
+
+        <div class="menu">
+            <h2>Compra de Passagem</h2>
+
+            <form @submit.prevent>
+                <label for="numPassageiros">numPassageiros:</label>
+                <input type="number" step="1" min="1" max="10" @input="doAtualizarValores" id="numPassageiros"
+                    v-model="numPassageirosField" required>
+            </form>
+
+            <div>
+                <form @submit.prevent>
+                    <div v-for="i in parseInt(numPassageiros)" :key="i">
+                        <label for="nome">Nome:</label>
+                        <input type="text" v-model="passageiros[i-1].nome" required>
+
+                        <label for="cpf">Cpf:</label>
+                        <input type="text" v-model="passageiros[i-1].cpf" required>
+                    </div>
+                </form>
+
+            </div>
+
+            <div class="buttons">
+                <button class="button-35" @click="doConfirmar">Confirmar</button>
+                <button class="button-35" @click="doVoltar">Voltar</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+
+        import header from "/vue/headerUser.js";
+        Vue.component("headercomponent", header);
+
+        function getPassageiros() {
+            // Aplica trim aos campos nome e cpf de todos os passageiros
+            return app.passageiros
+                .slice(0, app.numPassageiros)
+                .map(passageiro => {
+                    return {
+                        nome: passageiro.nome.trim(),
+                        cpf: passageiro.cpf.trim()
+                    };
+                });
+        }
+
+        function allFieldsOk() {
+            return app.passageiros
+                .slice(0, app.numPassageiros)
+                .every(passageiro => {
+                    return passageiro.nome.trim() !== '' && passageiro.cpf.trim() !== '';
+                });
+        }
+
+        function atualizarValores() {
+            const pf = parseInt(app.numPassageirosField); // Passageiro Field 
+            if (pf !== NaN && pf < 11 && pf > 0) {
+                // Se for inteiro e estiver entre 1 e 10
+                app.numPassageiros = pf;
+            } else {
+                // Se não obedecer as restrições mantém o valor
+                app.numPassageirosField = app.numPassageiros;
+            }
+        }
+
+        function addPassageiros(p) {
+            for (var i = 0; i < p; i++) {
+                this.passageiros.push({ "nome": "", "cpf": "" })
+            }
+        }
+
+        async function confirmar() {
+            if (allFieldsOk()) {
+                // Obter o ID do pedido
+                var path = window.location.pathname;
+                var id = path.substring([path.lastIndexOf('/') + 1]);
+
+                var data = {
+                    "id": id,
+                    "passageiros": getPassageiros()
+                };
+                var request = axios({
+                    "method": "post",
+                    "url": "/servicos/compraPassagem/" + id,
+                    "data": data
+                });
+
+                // Realizar requisição de forma assíncrona
+                try {
+                    var response = await request
+                    app.mensagem = response.data.resultado;
+                } catch (error) {
+                    app.mensagem = error.data.resultado;
+                }
+            } else {
+                app.mesagem = "Campos não preenchidos corretamente";
+            }
+        }
+
+        function voltar() {
+            console.log("volta")
+        }
+
+        // Criando appVue
+        var app = new Vue({
+            el: '#app',
+            mounted() {
+                this.doAddPassageiros(10)
+            },
+            data: {
+                "mensagem": "",
+                "passageiros": [],
+                "numPassageirosField": 0,
+                "numPassageiros": 0,
+            },
+            methods: {
+                doConfirmar: confirmar,
+                doVoltar: voltar,
+                doAddPassageiros: addPassageiros,
+                doAtualizarValores: atualizarValores,
+            },
+        })
+    </script>
+
+</body>
+
+</html>

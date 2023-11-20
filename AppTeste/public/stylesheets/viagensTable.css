@@ -4,39 +4,27 @@
     border-collapse: separate;
     border-spacing: 0 10px;
     margin: auto;
-    font-size: 0.9em;
+    font-size: 1em;
     font-family: sans-serif;
     min-width: 400px;
-}
-
-.viagensTable thead tr {
-    color: #274761;
-    text-align: left;
 }
 
 .viagensTable th,
 .viagensTable td {
     padding: 12px 15px;
-}
-
-.viagensTable td {
     color: #274761
 }
 
 .viagensTable tbody tr {
     border-bottom: 1px solid #dddddd;
-    background-color: #9cc2d0ff;
+} 
+
+/* https://stackoverflow.com/questions/10100169/border-radius-for-each-row-in-a-table */
+td:first-child{
+    border-radius:10px 0 0 10px;
+}
+td:last-child{
+    border-radius:0 10px 10px 0;
 }
 
-.viagensTable tbody tr:nth-of-type(even) {
-    background-color: #9cc2d0ff;
-}
-
-.viagensTable tbody tr:last-of-type {
-    border-bottom: 2px solid #009879;
-}
-
-.viagensTable tbody tr.active-row {
-    font-weight: bold;
-    color: #009879;
-}
+td{background:#C3DFE4;}

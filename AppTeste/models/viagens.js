@@ -7,6 +7,9 @@ var viagensSchema = new Schema({
     "id": String,
     "partida": String,
     "chegada": String,
-    "data": String
+    "data": String,
+    "passageiros": {type: [{nome: String, cpf: String}], 
+                    default: []},
+    "maxPassageiros": Number,
 });
 module.exports = conn1.model('viagens', viagensSchema);
