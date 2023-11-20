@@ -45,6 +45,7 @@ async function inserirViagem(req, res) {  // POST
     db.partida = req.body.partida;
     db.nome = req.body.nome;
     db.data = req.body.data;
+    db.maxPassageiros = req.body.maxPassageiros;
     try {
         db.save();
         response = { "resultado": "viagem inserida" };
@@ -124,6 +125,23 @@ async function deletaViagem(req, res) {   // DELETE (remove)
     res.json(response);
 }
 
+async function deletarTodasViagens(req, res) { // DELETE
+    if (checkAuth(req, res) != 'admin') {
+      res.status(401).json({'resultado': 'Unauthorized'});
+      return;
+    }
+  
+    // Remove todos os funcionários
+    var response = {};
+  
+    try {
+      await viagensDB.deleteMany({});
+      response = { "resultado": "Todas as viagens foram removidas com sucesso" };
+    } catch (err) {
+      response = { "resultado": "Falha ao remover funcionários do BD" };
+    }
+    res.json(response);
+  }
 
 router.route('/')
     .get(sendViagensFile)
@@ -135,5 +153,6 @@ router.route('/:id')
 
 router.route('/all')
     .get(obterTodasViagens)
+    .delete(deletarTodasViagens)
 
 module.exports = router;

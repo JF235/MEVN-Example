@@ -11,9 +11,9 @@
         
     </style>
 
-    <link rel="stylesheet" href="stylesheets/menu.css">
-    <link rel="stylesheet" href="stylesheets/forms.css">
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/stylesheets/menu.css">
+    <link rel="stylesheet" href="/stylesheets/forms.css">
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
 
 </head>
 
@@ -26,22 +26,27 @@
             <form class="form" @submit.prevent>
                 <div class="input">
                     <input class="input-field" type="text" id="id" v-model="id" required="">
-                    <label class="input-label" for="id">id:</label>
+                    <label class="input-label" for="id">ID:</label>
                 </div>
 
                 <div class="input">
                     <input class="input-field" type="text" id="partida" v-model="partida" required="">
-                    <label class="input-label" for="partida">partida:</label>
+                    <label class="input-label" for="partida">Partida:</label>
                 </div>
 
                 <div class="input">
                     <input class="input-field" type="text" id="chegada" v-model="chegada" required="">
-                    <label class="input-label" for="chegada">chegada:</label>
+                    <label class="input-label" for="chegada">Chegada:</label>
                 </div>
 
                 <div class="input">
                     <input class="input-field" type="text" id="data" v-model="data" required="">
-                    <label class="input-label" for="data">data:</label>
+                    <label class="input-label" for="data">Data:</label>
+                </div>
+
+                <div class="input">
+                    <input class="input-field" type="text" id="maxPassageiros" v-model="maxPassageiros" required="">
+                    <label class="input-label" for="maxPassageiros">Máximo de Passageiros:</label>
                 </div>
 
                 <div class="buttons">
@@ -62,7 +67,7 @@
 
         function isFormsEmpty() {
             // Verifica se os campos do formulário estão vazios
-            const listaDeItens = [app.id, app.partida, app.chegada, app.data];
+            const listaDeItens = [app.id, app.partida, app.chegada, app.data, app.maxPassageiros];
             for (var item in listaDeItens) {
                 if (item == undefined || item.length === 0)
                     return true;
@@ -84,6 +89,7 @@
                 "partida": app.partida,
                 "chegada": app.chegada,
                 "data": app.data,
+                "maxPassageiros": parseInt(app.maxPassageiros)
             };
             var request = axios({
                 "method": "post",
@@ -107,11 +113,15 @@
             }
 
             // Percorre todos os elementos e remove quais estão vazios
-            var novosDados = { id: app.id, partida: app.partida, chegada: app.chegada, data: app.data };
+            var novosDados = { id: app.id, partida: app.partida, chegada: app.chegada, data: app.data};
             for (var chave in novosDados) {
                 if (novosDados[chave] == undefined || novosDados[chave].length === 0) {
                     delete novosDados[chave];
                 }
+            }
+
+            if (app.maxPassageiros.length !== 0){
+                novosDados.maxPassageiros = parseInt(app.maxPassageiros);
             }
 
             // Se não sobrar nenhum elemento, mostra erro
@@ -193,7 +203,8 @@
                 partida: "",
                 chegada: "",
                 data: "",
-                mensagem: ""
+                mensagem: "",
+                maxPassageiros: "",
             },
             methods: {
                 doInserir: inserir,

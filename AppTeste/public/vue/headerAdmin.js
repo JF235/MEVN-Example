@@ -40,7 +40,7 @@ export default header = {
     <h1>
     <a href="#" @click="doGoToHome">NOME DA EMPRESA</a>
     </h1>
-    <img src="images/transport-enterprise-leasing-companyupdate-1653680284062.png" alt="Caminhoes">
+    <img src="/images/transport-enterprise-leasing-companyupdate-1653680284062.png" alt="Caminhoes">
     
     </div>
     
