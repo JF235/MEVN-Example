@@ -48,6 +48,8 @@
                 <button class="button-35" @click="doConfirmar">Confirmar</button>
                 <button class="button-35" @click="doVoltar">Voltar</button>
             </div>
+
+            {{ mensagem }}
         </div>
     </div>
 
@@ -103,21 +105,12 @@
                     "id": id,
                     "passageiros": getPassageiros()
                 };
-                var request = axios({
-                    "method": "post",
-                    "url": "/servicos/compraPassagem/" + id,
-                    "data": data
-                });
+                
+                sessionStorage.setItem("InfoPassagem", JSON.stringify(data));
 
-                // Realizar requisição de forma assíncrona
-                try {
-                    var response = await request
-                    app.mensagem = response.data.resultado;
-                } catch (error) {
-                    app.mensagem = error.data.resultado;
-                }
+                window.open("/servicos/pagamento", "_self");
             } else {
-                app.mesagem = "Campos não preenchidos corretamente";
+                app.mensagem = "Campos não preenchidos corretamente";
             }
         }
 

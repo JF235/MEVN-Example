@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Compra de Passagem</title>
+
+    <link rel="stylesheet" href="/stylesheets/menu.css">
+    <link rel="stylesheet" href="/stylesheets/dropdown.css">
+    <link rel="stylesheet" href="/stylesheets/forms.css">
+    <link rel="stylesheet" href="/stylesheets/viagensTable.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+
+</head>
+
+<body>
+    <div id="app">
+
+        <headercomponent></headercomponent>
+
+        <div class="menu">
+            <h2>Pagamento</h2>
+
+            <form class="form" @submit.prevent>
+                <div class="input">
+                    <input class="input-field" type="text" id="cardNo" v-model="cardNo" required>
+                    <label class="input-label" for="cardNo">Número do Cartão</label>
+                </div>
+
+                <div class="input">
+                    <input class="input-field" type="text" id="cardName" v-model="cardName" required>
+                    <label class="input-label" for="cardName">Nome</label>
+                </div>
+
+                <div class="input">
+                    <input class="input-field" type="text" id="cardValid" v-model="cardValid" required>
+                    <label class="input-label" for="cardValid">Data de Validade</label>
+                </div>
+
+                <div class="input">
+                    <input class="input-field" type="text" id="csvNo" v-model="csvNo" required>
+                    <label class="input-label" for="csvNo">CSV no.</label>
+                </div>
+
+
+                <div class="buttons">
+                    <button class="button-35" @click="doConfirmar">Enviar</button>
+                    <button class="button-35">Voltar</button>
+                </div>
+            </form>
+
+            {{ mensagem }}
+        </div>
+    </div>
+
+    <script type="module">
+
+        import header from "/vue/headerUser.js";
+        Vue.component("headercomponent", header);
+
+        function allFieldsOk() {
+            var dados = [app.cardNo, app.cardName, app.cardValid, app.csvNo];
+            return dados
+                .every(dado => {
+                    return dado.trim() !== '';
+                });
+        }
+
+        async function confirmar() {
+            if (allFieldsOk()) {
+                var data = JSON.parse(sessionStorage.getItem("InfoPassagem"))
+                console.log(data)
+                
+                var request = axios({
+                    "method": "post",
+                    "url": "/servicos/pagamento/",
+                    "data": data
+                });
+
+                // Realizar requisição de forma assíncrona
+                try {
+                    var response = await request
+                    app.mensagem = response.data.resultado;
+                } catch (error) {
+                    app.mensagem = error.data.resultado;
+                }
+            } else {
+                app.mensagem = "Campos não preenchidos corretamente";
+            }
+
+        }
+
+        // Criando appVue
+        var app = new Vue({
+            el: '#app',
+            data: {
+                "cardNo": "",
+                "cardName": "",
+                "cardValid": "",
+                "csvNo": "",
+                "mensagem": "",
+            },
+            methods: {
+                doConfirmar: confirmar,
+            },
+        })
+    </script>
+
+</body>
+
+</html>

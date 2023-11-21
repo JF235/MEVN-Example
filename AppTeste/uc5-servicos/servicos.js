@@ -19,6 +19,13 @@ function sendCompraPassagFile(req, res) {  // GET
     res.sendFile(path, { "root": "./" });
 }
 
+function sendPagamentoFile(req, res){
+    res.header('Cache-Control', 'no-cache');
+
+    var path = './uc5-servicos/pagamento.html';
+    res.sendFile(path, { "root": "./" });
+}
+
 async function buscarViagem(req, res) {
     if (checkAuth(req, res) === "unauthorized") {
         res.status(401).json({ 'resultado': 'Unauthorized' });
@@ -81,6 +88,9 @@ router.route('/solicitacaoEntrega')
 
 router.route('/compraPassagem/:id')
     .get(sendCompraPassagFile)
+
+router.route('/pagamento')
+    .get(sendPagamentoFile)
     .post(confirmarPassagens)
 
 module.exports = router;
