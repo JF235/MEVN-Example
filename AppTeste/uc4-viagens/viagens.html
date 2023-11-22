@@ -8,11 +8,12 @@
     <title>Formulário de Viagem</title>
 
     <style>
-        
+
     </style>
 
     <link rel="stylesheet" href="/stylesheets/menu.css">
     <link rel="stylesheet" href="/stylesheets/forms.css">
+    <link rel="stylesheet" href="/stylesheets/listingTable.css">
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
 
 </head>
@@ -23,30 +24,32 @@
         <headercomponent></headercomponent>
 
         <div class="menu">
+            <h2>Gerenciar Viagens</h2>
+
             <form class="form" @submit.prevent>
                 <div class="input">
                     <input class="input-field" type="text" id="id" v-model="id" required="">
-                    <label class="input-label" for="id">ID:</label>
+                    <label class="input-label" for="id">ID</label>
                 </div>
 
                 <div class="input">
                     <input class="input-field" type="text" id="partida" v-model="partida" required="">
-                    <label class="input-label" for="partida">Partida:</label>
+                    <label class="input-label" for="partida">Partida</label>
                 </div>
 
                 <div class="input">
                     <input class="input-field" type="text" id="chegada" v-model="chegada" required="">
-                    <label class="input-label" for="chegada">Chegada:</label>
+                    <label class="input-label" for="chegada">Chegada</label>
                 </div>
 
                 <div class="input">
                     <input class="input-field" type="text" id="data" v-model="data" required="">
-                    <label class="input-label" for="data">Data:</label>
+                    <label class="input-label" for="data">Data</label>
                 </div>
 
                 <div class="input">
                     <input class="input-field" type="text" id="maxPassageiros" v-model="maxPassageiros" required="">
-                    <label class="input-label" for="maxPassageiros">Máximo de Passageiros:</label>
+                    <label class="input-label" for="maxPassageiros">Máximo de Passageiros</label>
                 </div>
 
                 <div class="buttons">
@@ -54,28 +57,80 @@
                     <button class="button-35" @click="doEditar">Editar</button>
                     <button class="button-35" @click="doRemover">Remover</button>
                     <button class="button-35" @click="doListar">Listar Viagens</button>
+                    <!-- <br>
+                    <button @click="doLimpar">Limpar</button>
+                     -->
                 </div>
-
-                {{ mensagem }}
-
             </form>
+
+            {{ mensagem }}
+
+            <div v-if="visibilidadeTab">
+                <table class="listingTable">
+                    <thead>
+                        <tr>
+                            <th> ID </th>
+                            <th> Partida </th>
+                            <th> Chegada </th>
+                            <th> Data </th>
+                            <th> Máx. Passageiros </th>
+                            <th> Exibir Passageiros </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="tableEntry in tableData">
+                            <td> {{ tableEntry.id }} </td>
+                            <td> {{ tableEntry.partida }} </td>
+                            <td> {{ tableEntry.chegada }} </td>
+                            <td> {{ tableEntry.data }} </td>
+                            <td> {{ tableEntry.maxPassageiros }} </td>
+                            <td>
+                                <button class="button-35" @click="doExibirPassageiros(tableEntry.id)">✔</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div v-if="visibilidadePassageiros">
+                    <table class="listingTable2">
+                        <thead>
+                            <tr>
+                                <th> CPF </th>
+                                <th> Nome </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="passageiro in passageiros">
+                                <td> {{ passageiro.cpf }} </td>
+                                <td> {{ passageiro.nome }} </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
         </div>
     </div>
 
     <script type="module">
 
+        function hideTable() {
+            app.visibilidadeTab = false;
+            app.visibilidadePassageiros = false;
+        }
+
         function isFormsEmpty() {
             // Verifica se os campos do formulário estão vazios
             const listaDeItens = [app.id, app.partida, app.chegada, app.data, app.maxPassageiros];
-            for (var item in listaDeItens) {
-                if (item == undefined || item.length === 0)
+            for (var i = 0; i < listaDeItens.length; i++) {
+                if (listaDeItens[i] == undefined || listaDeItens[i].length === 0)
                     return true;
             }
             return false;
         }
 
         async function inserir() {
+            hideTable();
 
             if (isFormsEmpty()) {
                 app.mensagem = "Campos não preenchidos de forma devida.";
@@ -107,20 +162,22 @@
         }
 
         async function editar() {
+            hideTable();
+
             if (isFormsEmpty()) {
                 app.mensagem = "Campos não preenchidos de forma devida.";
                 return;
             }
 
             // Percorre todos os elementos e remove quais estão vazios
-            var novosDados = { id: app.id, partida: app.partida, chegada: app.chegada, data: app.data};
+            var novosDados = { id: app.id, partida: app.partida, chegada: app.chegada, data: app.data };
             for (var chave in novosDados) {
                 if (novosDados[chave] == undefined || novosDados[chave].length === 0) {
                     delete novosDados[chave];
                 }
             }
 
-            if (app.maxPassageiros.length !== 0){
+            if (app.maxPassageiros.length !== 0) {
                 novosDados.maxPassageiros = parseInt(app.maxPassageiros);
             }
 
@@ -154,6 +211,8 @@
         }
 
         async function remover() {
+            hideTable();
+
             if (app.id == undefined || app.id.length == 0) {
                 app.mensagem = "preencha o id da viagem";
                 return;
@@ -180,13 +239,49 @@
         async function listar() {
             var request = axios({
                 "method": "get",
-                "url": "/viagens/all"
+                "url": "/viagens/0/all"
             });
 
             try {
                 var response = await request
                 app.mensagem = response.data.viagens;
                 app.payload = response;
+            } catch (error) {
+                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+            }
+        }
+
+        async function listarTabela() {
+            var request = axios({
+                "method": "get",
+                "url": "/viagens/0/all"
+            });
+
+            try {
+                var response = await request
+                app.tableData = response.data.viagens;
+                app.visibilidadeTab = true;
+            } catch (error) {
+                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+            }
+        }
+
+        async function exibirPassageiros(id) {
+            app.passageiros = app.tableData.find(viagem => {
+                return viagem.id === id
+            }).passageiros;
+            app.visibilidadePassageiros = true;
+        }
+
+        async function limpar() {
+            var request = axios({
+                "method": "delete",
+                "url": "/viagens/0/all"
+            });
+
+            try {
+                var response = await request
+                app.mensagem = response.data.resultado;
             } catch (error) {
                 app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
             }
@@ -205,12 +300,19 @@
                 data: "",
                 mensagem: "",
                 maxPassageiros: "",
+                mensagem: "",
+                visibilidadeTab: false,
+                visibilidadePassageiros: false,
+                tableData: [],
+                passageiros: [],
             },
             methods: {
                 doInserir: inserir,
                 doEditar: editar,
                 doRemover: remover,
-                doListar: listar,
+                doListar: listarTabela,
+                doExibirPassageiros: exibirPassageiros,
+                doLimpar: limpar,
             },
         })
     </script>

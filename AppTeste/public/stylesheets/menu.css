@@ -2,6 +2,7 @@
     background-color: #6e9ed3;
     /* Cor de fundo azul */
     color: #c3dfe4;
+    font-family: sans-serif;
     /* Cor do texto branco */
     border: 2px solid #274761;
 
@@ -35,6 +36,10 @@
     color: #204660;
     text-decoration: underline;
     cursor: pointer;
+}
+
+#headercomponent {
+    font-family: sans-serif;
 }
 
 #headercomponent h1 {

@@ -32,7 +32,7 @@ async function inserirViagem(req, res) {  // POST
 
     // cpf já existente
     if (data !== null) {
-        response = { "resultado": "funcionario ja existente" };
+        response = { "resultado": "viagem ja existente" };
         res.json(response);
         return;
     }
@@ -127,21 +127,23 @@ async function deletaViagem(req, res) {   // DELETE (remove)
 
 async function deletarTodasViagens(req, res) { // DELETE
     if (checkAuth(req, res) != 'admin') {
-      res.status(401).json({'resultado': 'Unauthorized'});
-      return;
+        res.status(401).json({ 'resultado': 'Unauthorized' });
+        return;
     }
-  
-    // Remove todos os funcionários
+
+    // Remove todos os
     var response = {};
-  
+
     try {
-      await viagensDB.deleteMany({});
-      response = { "resultado": "Todas as viagens foram removidas com sucesso" };
+        await viagensDB.deleteMany({});
+        console.log("Todas as viagens foram removidas com sucesso")
+        response = { "resultado": "Todas as viagens foram removidas com sucesso" };
     } catch (err) {
-      response = { "resultado": "Falha ao remover funcionários do BD" };
+        console.log(err)
+        response = { "resultado": "Falha ao remover viagens do BD" };
     }
     res.json(response);
-  }
+}
 
 router.route('/')
     .get(sendViagensFile)
@@ -151,7 +153,7 @@ router.route('/:id')
     .put(alteraViagem)
     .delete(deletaViagem);
 
-router.route('/all')
+router.route('/:id/all')
     .get(obterTodasViagens)
     .delete(deletarTodasViagens)
 
