@@ -1,0 +1,63 @@
+/* Fonte:  https://dev.to/dcodeyt/creating-beautiful-html-tables-with-css-428l */
+
+.listingTable {
+    border-collapse: separate;
+    border-spacing: 2px 10px;
+    margin: auto;
+    font-size: 1em;
+    font-family: sans-serif;
+    min-width: 400px;
+}
+
+.listingTable th,
+.listingTable td {
+    padding: 12px 15px;
+    color: #274761;
+    background: #C3DFE4;
+}
+
+.listingTable tbody tr {
+    border-bottom: 1px solid #dddddd;
+} 
+
+/* https://stackoverflow.com/questions/10100169/border-radius-for-each-row-in-a-table */
+.listingTable th:first-child,
+.listingTable td:first-child{
+    border-radius:10px 0 0 10px;
+}
+.listingTable th:last-child,
+.listingTable td:last-child{
+    border-radius:0 10px 10px 0;
+}
+
+/* Listas menores */
+
+.listingTable2 {
+    border-collapse: separate;
+    border-spacing: 2px 10px;
+    margin: auto;
+    font-size: .7em;
+    font-family: sans-serif;
+    min-width: 400px;
+}
+
+.listingTable2 th,
+.listingTable2 td {
+    padding: 9px 12px;
+    color: #274761;
+    background: #C3DFE4;
+}
+
+.listingTable2 tbody tr {
+    border-bottom: 1px solid #dddddd;
+} 
+
+/* https://stackoverflow.com/questions/10100169/border-radius-for-each-row-in-a-table */
+.listingTable2 th:first-child,
+.listingTable2 td:first-child{
+    border-radius:10px 0 0 10px;
+}
+.listingTable2 th:last-child,
+.listingTable2 td:last-child{
+    border-radius:0 10px 10px 0;
+}

@@ -90,3 +90,30 @@ buttons {
 .button-35:hover {
 	box-shadow: #fff 0 0 0 1px, transparent 0 0 0 0;
 }
+
+/* Options 
+https://www.sliderrevolution.com/resources/css-select-styles/*/
+
+.select-dropdown {
+	display: flex;
+	flex-direction: column-reverse;
+	position: relative;
+	padding-top: 1.5rem;
+	width: 220px;
+}
+
+.select-dropdown select {
+	display: block;
+	width: 100%;
+	margin: auto;
+	font-size: 1rem;
+	padding: 8px 24px 8px 10px;
+	color: #eee;
+	background-color: transparent;
+	border: none;
+	border-bottom: 2px solid #eee;
+}
+
+.select-dropdown option {
+	color: black;
+}

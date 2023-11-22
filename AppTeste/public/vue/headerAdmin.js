@@ -46,7 +46,7 @@ export default header = {
     
   
     <div class="menu" style="display: flex;justify-content: space-around;">
-        <a class="link" @click="doGoToFunc">Gerenciar Funcionarios</a>
+        <a class="link" @click="doGoToFunc">Gerenciar Usuários</a>
 
         <a class="link" @click="doGoToViagens">Gerenciar Viagens</a>
 

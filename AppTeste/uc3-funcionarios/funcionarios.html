@@ -8,11 +8,13 @@
     <title>Formulário do Funcionário</title>
 
     <style>
-        
+
     </style>
 
     <link rel="stylesheet" href="/stylesheets/menu.css">
     <link rel="stylesheet" href="/stylesheets/forms.css">
+    <link rel="stylesheet" href="/stylesheets/listingTable.css">
+
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
 
 </head>
@@ -23,25 +25,30 @@
         <headercomponent></headercomponent>
 
         <div class="menu">
+            <h2>Gerenciar Usuários</h2>
+
             <form class="form" @submit.prevent>
                 <div class="input">
                     <input class="input-field" type="text" id="cpf" v-model="cpf" required="">
-                    <label class="input-label" for="cpf">CPF:</label>
+                    <label class="input-label" for="cpf">CPF</label>
                 </div>
 
                 <div class="input">
                     <input class="input-field" type="text" id="nome" v-model="nome" required="">
-                    <label class="input-label" for="nome">Nome:</label>
+                    <label class="input-label" for="nome">Nome</label>
                 </div>
 
-                <div class="input">
-                    <input class="input-field" type="text" id="cargo" v-model="cargo" required="">
-                    <label class="input-label" for="cargo">Cargo:</label>
+                <div class="select-dropdown">
+                    <select id="cargo" name="cargo" v-model="cargo">
+                        <option selected disabled>Cargo</option>
+                        <option value="user">user</option>
+                        <option value="admin">admin</option>
+                    </select>
                 </div>
 
                 <div class="input">
                     <input class="input-field" type="text" id="senha" v-model="senha" required="">
-                    <label class="input-label" for="senha">Senha:</label>
+                    <label class="input-label" for="senha">Senha</label>
                 </div>
 
                 <div class="buttons">
@@ -53,6 +60,27 @@
 
                 {{ mensagem }}
 
+                <div v-if="visibilidadeTab">
+                    <table class="listingTable">
+                        <thead>
+                            <tr>
+                                <th> CPF </th>
+                                <th> Nome </th>
+                                <th> Cargo </th>
+                                <th> Senha </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="tableEntry in tableData">
+                                <td> {{ tableEntry.cpf }} </td>
+                                <td> {{ tableEntry.nome }} </td>
+                                <td> {{ tableEntry.cargo }} </td>
+                                <td> {{ tableEntry.senha }} </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
             </form>
 
         </div>
@@ -60,11 +88,16 @@
 
     <script type="module">
 
+        function hideTable() {
+            app.visibilidadeTab = false;
+            app.visibilidadePassageiros = false;
+        }
+
         function isFormsEmpty() {
             // Verifica se os campos do formulário estão vazios
             const listaDeItens = [app.cpf, app.nome, app.cargo, app.senha];
-            for (var item in listaDeItens) {
-                if (item == undefined || item.length === 0)
+            for (var i = 0; i < listaDeItens.length; i++) {
+                if (listaDeItens[i] == undefined || listaDeItens[i].length === 0)
                     return true;
             }
             return false;
@@ -75,6 +108,7 @@
         }
 
         async function inserir() {
+            hideTable()
 
             if (isFormsEmpty()) {
                 app.mensagem = "Campos não preenchidos de forma devida.";
@@ -105,6 +139,8 @@
         }
 
         async function editar() {
+            hideTable()
+
             if (isFormsEmpty()) {
                 app.mensagem = "Campos não preenchidos de forma devida.";
                 return;
@@ -148,6 +184,8 @@
         }
 
         async function remover() {
+            hideTable();
+
             if (app.cpf == undefined || app.cpf.length == 0) {
                 app.mensagem = "preencha o cpf do funcionário";
                 return;
@@ -166,6 +204,21 @@
                 var response = await request
                 app.mensagem = response.data.resultado;
                 app.payload = response;
+            } catch (error) {
+                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+            }
+        }
+
+        async function listarTabela() {
+            var request = axios({
+                "method": "get",
+                "url": "/funcionarios/all"
+            });
+
+            try {
+                var response = await request
+                app.tableData = response.data.funcionarios;
+                app.visibilidadeTab = true;
             } catch (error) {
                 app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
             }
@@ -195,16 +248,18 @@
             data: {
                 cpf: "",
                 nome: "",
-                cargo: "",
+                cargo: "Cargo",
                 senha: "",
-                mensagem: ""
+                mensagem: "",
+                visibilidadeTab: false,
+                tableData: [],
             },
             methods: {
                 doInserir: inserir,
                 doEditar: editar,
                 doRemover: remover,
                 doGoToFunc: goToFuncionarios,
-                doListar: listar,
+                doListar: listarTabela,
             },
         })
     </script>
