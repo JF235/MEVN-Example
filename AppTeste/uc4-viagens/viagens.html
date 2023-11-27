@@ -75,6 +75,8 @@
                             <th> Data </th>
                             <th> Máx. Passageiros </th>
                             <th> Exibir Passageiros </th>
+                            <th> Exibir Entregas </th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -86,6 +88,9 @@
                             <td> {{ tableEntry.maxPassageiros }} </td>
                             <td>
                                 <button class="button-35" @click="doExibirPassageiros(tableEntry.id)">✔</button>
+                            </td>
+                            <td>
+                                <button class="button-35" @click="doExibirEntregas(tableEntry.id)">✔</button>
                             </td>
                         </tr>
                     </tbody>
@@ -107,6 +112,23 @@
                         </tbody>
                     </table>
                 </div>
+
+                <div v-if="visibilidadeEntrega">
+                    <table class="listingTable2">
+                        <thead>
+                            <tr>
+                                <th> Nome </th>
+                                <th> Volume </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="entrega in entregas">
+                                <td> {{ entrega.nome }} </td>
+                                <td> {{ entrega.volume }} </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </div>
@@ -117,6 +139,7 @@
         function hideTable() {
             app.visibilidadeTab = false;
             app.visibilidadePassageiros = false;
+            app.visibilidadeEntrega = false;
         }
 
         function isFormsEmpty() {
@@ -268,11 +291,20 @@
             }
         }
 
-        async function exibirPassageiros(id) {
+        function exibirPassageiros(id) {
             app.passageiros = app.tableData.find(viagem => {
                 return viagem.id === id
             }).passageiros;
+            app.visibilidadeEntrega = false;
             app.visibilidadePassageiros = true;
+        }
+
+        function exibirEntregas(id) {
+            app.entregas = app.tableData.find(viagem => {
+                return viagem.id === id
+            }).entregas;
+            app.visibilidadePassageiros = false;
+            app.visibilidadeEntrega = true;
         }
 
         async function limpar() {
@@ -305,8 +337,10 @@
                 mensagem: "",
                 visibilidadeTab: false,
                 visibilidadePassageiros: false,
+                visibilidadeEntrega: false,
                 tableData: [],
                 passageiros: [],
+                entregas: [],
             },
             methods: {
                 doInserir: inserir,
@@ -314,6 +348,7 @@
                 doRemover: remover,
                 doListar: listarTabela,
                 doExibirPassageiros: exibirPassageiros,
+                doExibirEntregas: exibirEntregas,
                 doLimpar: limpar,
             },
         })

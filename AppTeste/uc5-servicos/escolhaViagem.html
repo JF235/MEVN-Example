@@ -134,7 +134,8 @@
         }
 
         async function selecionar(id) {
-            window.open("/servicos/compraPassagem/" + id, self);
+            var servicoPath = sessionStorage.getItem("lastServico");
+            window.open(servicoPath + id, self);
         }
 
         // Criando appVue
