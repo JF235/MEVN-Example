@@ -33,7 +33,7 @@ export default header = {
 <div id="headercomponent">
     <div id="ConteudoMenu">
         <h1>
-            <a href="#" @click="doGoToHome">NOME DA EMPRESA</a>
+            <a href="#" @click="doGoToHome">FEEC Transportes</a>
         </h1>
         <img src="/images/transport-enterprise-leasing-companyupdate-1653680284062.png" alt="Caminhoes">
 
@@ -42,7 +42,7 @@ export default header = {
 
     <div class="menu" style="display: flex;justify-content: space-around;">
         <div class="dropdown">
-            <button class="dropbtn">Servicos ▾</button>
+            <button class="dropbtn">Serviços ▾</button>
             <div class="dropdown-content">
                 <a href="#" @click="doGoToComprarPassagem">Comprar Passagem</a>
                 <a href="#" @click="doGoToSolicitarEntrega">Solicitação de Entrega</a>

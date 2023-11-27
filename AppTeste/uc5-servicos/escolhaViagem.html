@@ -28,17 +28,17 @@
             <form class="form" v-if="forms" @submit.prevent>
                 <div class="input">
                     <input class="input-field" type="text" id="partida" v-model="partida" required>
-                    <label class="input-label" for="partida">Partida:</label>
+                    <label class="input-label" for="partida">Partida</label>
                 </div>
 
                 <div class="input">
                     <input class="input-field" type="text" id="chegada" v-model="chegada" required>
-                    <label class="input-label" for="chegada">Chegada:</label>
+                    <label class="input-label" for="chegada">Chegada</label>
                 </div class="input">
 
-                <div class="input">
-                    <input class="input-field" type="text" id="data" v-model="data" required>
-                    <label class="input-label" for="data">Data:</label>
+                <div class="input data">
+                    <input class="input-field" type="date" id="data" v-model="data" required>
+                    <label class="input-label" for="data">Data</label>
                 </div>
 
                 <div class="buttons">
@@ -60,7 +60,7 @@
                         <tr v-for="tableEntry in tableData">
                             <td> {{ tableEntry.partida }} </td>
                             <td> {{ tableEntry.chegada }} </td>
-                            <td> {{ tableEntry.data }} </td>
+                            <td> {{ tableEntry.data.substring(0, 10) }} </td>
                             <td>
                                 <button class="button-35" @click="doSelecionar(tableEntry.id)">✔</button>
                             </td>
@@ -124,8 +124,7 @@
                     app.mensagem = "Nenhuma viagem foi encontrada."
                 }
             } catch (error) {
-                console.log(error.response)
-                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+                app.mensagem = error.response;
             }
         }
 

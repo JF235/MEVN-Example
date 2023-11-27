@@ -7,10 +7,6 @@
     <meta charset="UTF-8">
     <title>Formulário do Funcionário</title>
 
-    <style>
-
-    </style>
-
     <link rel="stylesheet" href="/stylesheets/menu.css">
     <link rel="stylesheet" href="/stylesheets/forms.css">
     <link rel="stylesheet" href="/stylesheets/listingTable.css">
@@ -179,7 +175,7 @@
                 var response = await request
                 app.mensagem = response.data.resultado;
             } catch (error) {
-                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+                app.mensagem = error.response;
             }
         }
 
@@ -205,14 +201,14 @@
                 app.mensagem = response.data.resultado;
                 app.payload = response;
             } catch (error) {
-                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+                app.mensagem = error.response;
             }
         }
 
         async function listarTabela() {
             var request = axios({
                 "method": "get",
-                "url": "/funcionarios/all"
+                "url": "/funcionarios/0/all"
             });
 
             try {
@@ -220,14 +216,14 @@
                 app.tableData = response.data.funcionarios;
                 app.visibilidadeTab = true;
             } catch (error) {
-                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+                app.mensagem = error.response;
             }
         }
 
         async function listar() {
             var request = axios({
                 "method": "get",
-                "url": "/funcionarios/all"
+                "url": "/funcionarios/0/all"
             });
 
             try {
@@ -235,7 +231,7 @@
                 app.mensagem = response.data.funcionarios;
                 app.payload = response;
             } catch (error) {
-                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+                app.mensagem = error.response;
             }
         }
 

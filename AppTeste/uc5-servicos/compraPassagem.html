@@ -25,20 +25,24 @@
         <div class="menu">
             <h2>Compra de Passagem</h2>
 
-            <form @submit.prevent>
-                <label for="numPassageiros">numPassageiros:</label>
-                <input type="number" step="1" min="1" max="10" @input="doAtualizarValores" id="numPassageiros"
-                    v-model="numPassageirosField" required>
+            <form class="form" @submit.prevent>
+                <div class="input data">
+                    <input class="input-field" type="number" step="1" min="1" max="10" @input="doAtualizarValores"
+                        id="numPassageiros" v-model="numPassageirosField" required>
+                    <label class="input-label" for="numPassageiros">numPassageiros</label>
+                </div>
             </form>
 
             <div>
-                <form @submit.prevent>
+                <form class="form" @submit.prevent>
                     <div v-for="i in parseInt(numPassageiros)" :key="i">
-                        <label for="nome">Nome:</label>
-                        <input type="text" v-model="passageiros[i-1].nome" required>
+                        <div class="input-sidebyside">
+                            <input class="input-field" type="text" v-model="passageiros[i-1].nome" required>
+                            <label class="input-sidebyside-label" for="nome">Nome</label>
 
-                        <label for="cpf">Cpf:</label>
-                        <input type="text" v-model="passageiros[i-1].cpf" required>
+                            <input class="input-field" type="text" v-model="passageiros[i-1].cpf" required>
+                            <label class="input-sidebyside-label" for="cpf">CPF</label>
+                        </div>
                     </div>
                 </form>
 
@@ -105,7 +109,7 @@
                     "id": id,
                     "passageiros": getPassageiros()
                 };
-                
+
                 sessionStorage.setItem("InfoPassagem", JSON.stringify(data));
 
                 window.open("/servicos/pagamento", "_self");
@@ -115,7 +119,7 @@
         }
 
         function voltar() {
-            console.log("volta")
+            window.open("/servicos/escolhaViagem", self);
         }
 
         // Criando appVue

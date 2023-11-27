@@ -150,7 +150,7 @@ router.route('/:cpf')
   .put(alteraFuncionario)
   .delete(deletaFuncionario);
 
-router.route('/all')
+router.route('/0/all')
   .get(obterTodosFuncionarios)
   .delete(removerTodosFuncionarios);
 

@@ -1,6 +1,4 @@
 async function goToFuncionarios() {
-    console.log("Redirecting...")
-
     window.open("/funcionarios", "_self");
 }
 
@@ -20,14 +18,10 @@ async function logout() {
 }
 
 async function goToHome() {
-    console.log("Redirecting...")
-
     window.open("/", "_self");
 }
 
 async function goToViagens() {
-    console.log("Redirecting...")
-
     window.open("/viagens", "_self");
 }
 
@@ -38,7 +32,7 @@ export default header = {
     
     <div id="ConteudoMenu">
     <h1>
-    <a href="#" @click="doGoToHome">NOME DA EMPRESA</a>
+    <a href="#" @click="doGoToHome">FEEC Transportes</a>
     </h1>
     <img src="/images/transport-enterprise-leasing-companyupdate-1653680284062.png" alt="Caminhoes">
     
