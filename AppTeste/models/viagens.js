@@ -7,7 +7,7 @@ var viagensSchema = new Schema({
     "id": String,
     "partida": String,
     "chegada": String,
-    "data": String,
+    "data": Date,
     "passageiros": {type: [{nome: String, cpf: String}], 
                     default: []},
     "maxPassageiros": Number,

@@ -153,7 +153,7 @@ router.route('/:id')
     .put(alteraViagem)
     .delete(deletaViagem);
 
-router.route('/:id/all')
+router.route('/0/all')
     .get(obterTodasViagens)
     .delete(deletarTodasViagens)
 

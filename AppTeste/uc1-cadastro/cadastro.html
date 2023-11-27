@@ -69,7 +69,7 @@
             if (app.nome == undefined || app.nome.length == 0 ||
                 app.senha == undefined || app.senha.length == 0 ||
                 app.cpf == undefined || app.cpf.length == 0) {
-                console.log("Campos não preenchidos de forma devida.");
+                app.mensagem = "Campos não preenchidos de forma devida.";
                 return;
             }
 

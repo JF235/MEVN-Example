@@ -42,8 +42,8 @@
                     <label class="input-label" for="chegada">Chegada</label>
                 </div>
 
-                <div class="input">
-                    <input class="input-field" type="text" id="data" v-model="data" required="">
+                <div class="input data">
+                    <input class="input-field" type="date" id="data" v-model="data" required="">
                     <label class="input-label" for="data">Data</label>
                 </div>
 
@@ -82,7 +82,7 @@
                             <td> {{ tableEntry.id }} </td>
                             <td> {{ tableEntry.partida }} </td>
                             <td> {{ tableEntry.chegada }} </td>
-                            <td> {{ tableEntry.data }} </td>
+                            <td> {{ tableEntry.data.substring(0,10) }} </td>
                             <td> {{ tableEntry.maxPassageiros }} </td>
                             <td>
                                 <button class="button-35" @click="doExibirPassageiros(tableEntry.id)">✔</button>
@@ -121,7 +121,7 @@
 
         function isFormsEmpty() {
             // Verifica se os campos do formulário estão vazios
-            const listaDeItens = [app.id, app.partida, app.chegada, app.data, app.maxPassageiros];
+            const listaDeItens = [app.id, app.partida, app.chegada, app.data.substring(0,10), app.maxPassageiros];
             for (var i = 0; i < listaDeItens.length; i++) {
                 if (listaDeItens[i] == undefined || listaDeItens[i].length === 0)
                     return true;
@@ -143,7 +143,7 @@
                 "id": app.id,
                 "partida": app.partida,
                 "chegada": app.chegada,
-                "data": app.data,
+                "data": app.data.substring(0,10),
                 "maxPassageiros": parseInt(app.maxPassageiros)
             };
             var request = axios({
@@ -164,18 +164,20 @@
         async function editar() {
             hideTable();
 
-            if (isFormsEmpty()) {
-                app.mensagem = "Campos não preenchidos de forma devida.";
+            if (app.id == undefined || app.id.length == 0) {
+                app.mensagem = "preencha o id da viagem";
                 return;
             }
 
             // Percorre todos os elementos e remove quais estão vazios
-            var novosDados = { id: app.id, partida: app.partida, chegada: app.chegada, data: app.data };
+            var novosDados = { id: app.id, partida: app.partida, chegada: app.chegada, data: app.data.substring(0,10) };
             for (var chave in novosDados) {
                 if (novosDados[chave] == undefined || novosDados[chave].length === 0) {
                     delete novosDados[chave];
                 }
             }
+
+            console.log(novosDados)
 
             if (app.maxPassageiros.length !== 0) {
                 novosDados.maxPassageiros = parseInt(app.maxPassageiros);
@@ -206,7 +208,7 @@
                 var response = await request
                 app.mensagem = response.data.resultado;
             } catch (error) {
-                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+                app.mensagem = error.response;
             }
         }
 
@@ -232,7 +234,7 @@
                 app.mensagem = response.data.resultado;
                 app.payload = response;
             } catch (error) {
-                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+                app.mensagem = error.response;
             }
         }
 
@@ -247,7 +249,7 @@
                 app.mensagem = response.data.viagens;
                 app.payload = response;
             } catch (error) {
-                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+                app.mensagem = error.response;
             }
         }
 
@@ -262,7 +264,7 @@
                 app.tableData = response.data.viagens;
                 app.visibilidadeTab = true;
             } catch (error) {
-                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+                app.mensagem = error.response;
             }
         }
 
@@ -283,7 +285,7 @@
                 var response = await request
                 app.mensagem = response.data.resultado;
             } catch (error) {
-                app.mensagem = "O usuário autenticado não está autorizado a fazer modificações";
+                app.mensagem = error.response;
             }
         }
 
