@@ -19,7 +19,7 @@ function sendCompraPassagFile(req, res) {  // GET
     res.sendFile(path, { "root": "./" });
 }
 
-function sendPagamentoFile(req, res){
+function sendPagamentoFile(req, res) {
     res.header('Cache-Control', 'no-cache');
 
     var path = './uc5-servicos/pagamento.html';
@@ -52,7 +52,7 @@ function sendEscolhaViagemFile(req, res) {  // GET
     res.sendFile(path, { "root": "./" });
 }
 
-async function confirmarPassagens(req, res) { // POST
+async function confirmarOrdem(req, res) { // POST
     if (checkAuth(req, res) === "unauthorized") {
         res.status(401).json({ 'resultado': 'Unauthorized' });
         return;
@@ -64,13 +64,21 @@ async function confirmarPassagens(req, res) { // POST
     var query = { "id": req.body.id };
     try {
         var data = await viagensDB.findOne(query);
-        if (req.body.passageiros.length + data.passageiros.length > data.maxPassageiros) {
-            response = { "resultado": "Viagem cheia" };
-        }
-        else {
-            response = { "resultado": "Passageiros inseridos" };
-            data.passageiros = data.passageiros.concat(req.body.passageiros);
-            var data = await viagensDB.findOneAndUpdate(query, {"passageiros": data.passageiros});
+
+        if (req.body.servico === "/servicos/compraPassagem/") {
+            if (req.body.passageiros.length + data.passageiros.length > data.maxPassageiros) {
+                response = { "resultado": "Viagem cheia" };
+            }
+            else {
+                response = { "resultado": "Passageiros inseridos" };
+                data.passageiros = data.passageiros.concat(req.body.passageiros);
+                var data = await viagensDB.findOneAndUpdate(query, { "passageiros": data.passageiros });
+            }
+        } else if (req.body.servico === "/servicos/solicitacaoEntrega/") {
+            // Verificar volume total de entregas
+            response = { "resultado": "Entregas inseridas" };
+            data.entregas = data.entregas.concat(req.body.entregas);
+            var data = await viagensDB.findOneAndUpdate(query, { "entregas": data.entregas });
         }
 
     } catch (err) {
@@ -83,7 +91,7 @@ router.route('/escolhaViagem')
     .get(sendEscolhaViagemFile)
     .post(buscarViagem);
 
-router.route('/solicitacaoEntrega')
+router.route('/solicitacaoEntrega/:id')
     .get(sendSolEntregaFile);
 
 router.route('/compraPassagem/:id')
@@ -91,6 +99,6 @@ router.route('/compraPassagem/:id')
 
 router.route('/pagamento')
     .get(sendPagamentoFile)
-    .post(confirmarPassagens)
+    .post(confirmarOrdem)
 
 module.exports = router;

@@ -10,6 +10,8 @@ var viagensSchema = new Schema({
     "data": Date,
     "passageiros": {type: [{nome: String, cpf: String}], 
                     default: []},
+    "entregas": {type: [{nome: String, volume: Number}], 
+    default: []},
     "maxPassageiros": Number,
 });
 module.exports = conn1.model('viagens', viagensSchema);

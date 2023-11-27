@@ -74,6 +74,7 @@
             if (allFieldsOk()) {
                 var data = JSON.parse(sessionStorage.getItem("InfoPassagem"))
                 console.log(data)
+                data.servico = sessionStorage.getItem("lastServico")
                 
                 var request = axios({
                     "method": "post",

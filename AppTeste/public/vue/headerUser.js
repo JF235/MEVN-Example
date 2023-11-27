@@ -20,11 +20,13 @@ async function goToHome() {
 }
 
 async function goToComprarPassagem() {
-    window.open("/servicos/escolhaViagem", self);
+    sessionStorage.setItem("lastServico", "/servicos/compraPassagem/");
+    window.open("/servicos/escolhaViagem", '_self');
 }
 
 async function goToSolicitarEntrega() {
-    window.open("/servicos/escolhaViagem", self);
+    sessionStorage.setItem("lastServico", "/servicos/solicitacaoEntrega/");
+    window.open("/servicos/escolhaViagem", '_self');
 }
 
 var header;
